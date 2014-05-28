@@ -1,1 +1,17 @@
 tic-tac-toe let’s go!
+
+
+1. console application
+2. add graphic
+3. add network
+4. port to win, iOS
+
+
+
+
+
+Condole application (C++)
+– need entity:
+–––– playing field
+–––– getting step
+–––– check finish

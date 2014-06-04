@@ -5,14 +5,15 @@
 #include <exception>
 
 
-const int WIGHT_IN_CELL = 10;
-const int HIGHT_IN_CELL = 10;
+const int WIGHT_IN_CELL = 15;
+const int HIGHT_IN_CELL = 15;
 const int CELL_WIGHT = 40;
 const int CELL_HIGHT = 40;
 
 PlayingFieldWidget::PlayingFieldWidget(QWidget* widget) 
     : QWidget(widget), field(WIGHT_IN_CELL) {
 
+    play_enable = true;
     resize(WIGHT_IN_CELL * CELL_WIGHT, HIGHT_IN_CELL * CELL_HIGHT);
     setMinimumSize(size());
     setMaximumSize(size());
@@ -44,6 +45,7 @@ void PlayingFieldWidget::mouseReleaseEvent(QMouseEvent* pe) {
         ticks.clear();
         toes.clear();
         field.reset_game();
+        emit end_game();
     }
 
     repaint();
@@ -71,5 +73,17 @@ void PlayingFieldWidget::paintEvent(QPaintEvent* pe) {
     for (auto& obj : toes) {
         painter.drawEllipse(obj);
     }
+}
+
+void PlayingFieldWidget::set_play_disable() {
+    play_enable = false;
+}
+
+void PlayingFieldWidget::set_play_enable() {
+    play_enable = true;
+}
+
+bool PlayingFieldWidget::get_play_enable() {
+    return play_enable;
 }
 

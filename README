@@ -15,3 +15,13 @@ Condole application (C++)
 –––– playing field
 –––– getting step
 –––– check finish
+
+
+Gui application (C++ Qt)
+need:   
+	property : play enable
+	signal   : end game (result)
+	widget   : game stat
+	button   : new game
+
+menu:

@@ -11,5 +11,5 @@ QT += widgets
 CONFIG += c++11
 
 # Input
-HEADERS += playing_field.h playing_field_widget.h
-SOURCES += main.cpp playing_field.cpp playing_field_widget.cpp
+HEADERS += playing_field.h playing_field_widget.h game_stat_widget.h
+SOURCES += main.cpp playing_field.cpp playing_field_widget.cpp game_stat_widget.cpp

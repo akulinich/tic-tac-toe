@@ -31,7 +31,10 @@ public:
     bool get_play_enable();
 
 signals:
-    void end_game();
+    void end_game(GameStatus result);
+
+public slots:
+    void new_game();
 };
 
 #endif

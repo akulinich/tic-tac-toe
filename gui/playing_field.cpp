@@ -130,3 +130,7 @@ void PlayingField::print_game() {
     cout << endl;
 }
 
+int PlayingField::get_size() {
+    return field.size();
+}
+

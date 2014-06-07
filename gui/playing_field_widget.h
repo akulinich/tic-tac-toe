@@ -22,12 +22,15 @@ private:
     void set_play_disable();
     void set_play_enable();
 
+    int cell_size;
+    int field_size;
+
 protected:
     void paintEvent(QPaintEvent* pe);
     void mouseReleaseEvent(QMouseEvent* pe);
 
 public:
-    PlayingFieldWidget(QWidget* widget = 0);
+    PlayingFieldWidget(int size_of_field, int cell_size, QWidget* widget = 0);
     bool get_play_enable();
 
 signals:

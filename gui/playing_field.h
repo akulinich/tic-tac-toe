@@ -38,6 +38,7 @@ public:
     
     void reset_game();
     Player get_turn();
+    int get_size();
 
     void print_game();
 

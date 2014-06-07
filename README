@@ -4,20 +4,16 @@ tic-tac-toe let’s go!
 1. console application ––– done
 2. add graphic         ––– first version
 3. add network
-4. port to win, iOS
+4. port to win, iOS    ––– (hold over, need developer account)
 
 
-
-
-
-Condole application (C++)
-– need entity:
-–––– playing field
-–––– getting step
-–––– check finish
-
+need:
 
 Gui application (C++ Qt)
 need:   
 	redesign game stat
-	add menu (?)
+
+Net version:
+	create server app
+	create client app
+

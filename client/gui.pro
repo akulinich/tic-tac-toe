@@ -6,7 +6,7 @@ TEMPLATE = app
 TARGET = Tic-Tac-Toe
 INCLUDEPATH += .
 
-QT += widgets
+QT += widgets network
 
 CONFIG += c++11
 
@@ -16,11 +16,14 @@ DESTDIR = /Users/Alexander/Projects/tic-tac-toe/build
 HEADERS += playing_field.h \
            playing_field_widget.h \
            game_stat_widget.h \ 
-           main_window.h
+           main_window.h \
+           client.h \
+           package.h
            
 SOURCES += main.cpp \
            playing_field.cpp \
            playing_field_widget.cpp \
            game_stat_widget.cpp \
-           main_window.cpp
+           main_window.cpp \
+           client.cpp
             

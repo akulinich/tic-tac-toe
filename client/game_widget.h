@@ -28,6 +28,10 @@ private:
 
     int cell_size;
     int field_size;
+
+    QWidget* input_ip_and_port;
+    QLineEdit* ip_line;
+    QLineEdit* port_line;
     QString ip;
     int port;
 
@@ -50,6 +54,9 @@ public slots:
     void setPlayerVsPlayer();
     void setPlayerVsCPU();
     void setPlayerVsNet();
+
+    void setIpAndPort();
+    void createPlayerVsNetGame();
 };
 
 #endif

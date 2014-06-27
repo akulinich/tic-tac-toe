@@ -148,7 +148,14 @@ void GameWidget::setPlayerVsCPU() {
     type = PlVsCPU;
 }
 
-void GameWidget::setPlayerVsNet() {
+void GameWidget::setIpAndPort() {
+    ip = ip_line->text();
+    port = port_line->text().toInt();
+    input_ip_and_port->close();
+    delete input_ip_and_port;
+}
+
+void GameWidget::createPlayerVsNetGame() {
     delete game;
     game = new NetGame(this, field_size, ip, port);
     connect(this, SIGNAL(mouseClicked(Position)), game, SLOT(getUserTurn(Position)));
@@ -156,6 +163,37 @@ void GameWidget::setPlayerVsNet() {
     connect(game, SIGNAL(signalGameOver()), this, SLOT(raizeEndGame()));
 
     type = PlVsNet;
+}
+
+
+void GameWidget::setPlayerVsNet() {
+    input_ip_and_port = new QWidget;
+    QLabel* ip_label = new QLabel("ip");
+    QLabel* port_label = new QLabel("port");
+    ip_line = new QLineEdit;
+    ip_line->setText("localhost");
+    port_line = new QLineEdit;
+    port_line->setText("8080");
+    QPushButton* button = new QPushButton("Ok");
+    QVBoxLayout* main_layout = new QVBoxLayout;
+    QHBoxLayout* ip_layout = new QHBoxLayout;
+    QHBoxLayout* port_layout = new QHBoxLayout;
+
+    connect(button, SIGNAL(clicked()), this, SLOT(setIpAndPort()));
+    connect(input_ip_and_port, SIGNAL(destroyed()), this, SLOT(createPlayerVsNetGame()));
+
+    ip_layout->addWidget(ip_label);
+    ip_layout->addWidget(ip_line);
+
+    port_layout->addWidget(port_label);
+    port_layout->addWidget(port_line);
+
+    main_layout->addLayout(ip_layout);
+    main_layout->addLayout(port_layout);
+    main_layout->addWidget(button);
+
+    input_ip_and_port->setLayout(main_layout);
+    input_ip_and_port->show();
 }
 
 #endif

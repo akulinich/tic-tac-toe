@@ -82,18 +82,22 @@ void MainWindow::create_actios() {
     connect(set_pl_vs_pl, SIGNAL(triggered()), stat, SLOT(reset_counters()));
     connect(set_pl_vs_pl, SIGNAL(triggered()), game_field, SLOT(newGame()));
     set_pl_vs_pl->setCheckable(true); 
-    set_pl_vs_pl->setChecked(true);
+    // set_pl_vs_pl->setChecked(true);
 
     set_pl_vs_cpu = new QAction("Player vs CPU", this);
     connect(set_pl_vs_cpu, SIGNAL(triggered()), game_field, SLOT(setPlayerVsCPU()));
     connect(set_pl_vs_cpu, SIGNAL(triggered()), stat, SLOT(reset_counters()));
     connect(set_pl_vs_cpu, SIGNAL(triggered()), game_field, SLOT(newGame()));
     set_pl_vs_cpu->setCheckable(true);
+    set_pl_vs_cpu->setChecked(true);
     // set_pl_vs_cpu->setEnabled(false);
 
     set_net = new QAction("Net game", this);
+    connect(set_net, SIGNAL(triggered()), game_field, SLOT(setPlayerVsNet()));
+    connect(set_net, SIGNAL(triggered()), stat, SLOT(reset_counters()));
+    connect(set_net, SIGNAL(triggered()), game_field, SLOT(newGame()));
     set_net->setCheckable(true);
-    set_net->setEnabled(false);
+    // set_net->setEnabled(false);
     
     game_type->addAction(set_pl_vs_pl);
     game_type->addAction(set_pl_vs_cpu);

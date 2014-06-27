@@ -7,83 +7,21 @@ tic-tac-toe let’s go!
 4. port to win, iOS    ––– (hold over, need developer account)
 
 
-need:
-
-Gui application (C++ Qt)
-need:   
-	redesign game stat
-
-Net version:
-	create server app
-	create client app
-
-	server mission:
-		connect to client (how?)
-		receive info from one
-		send info to other
-
-	client mission:
-		consist all logic
-		take info from user (user decision when it’s turn and blocked when other user turn)
-		send this info to server
-
-		client -> try to connect
-		client -> when signal connected() -> read info about who first
-		client -> if first do turn and send to server
-		client -> if second wait info from server
-		client -> when game end send to server this info
-		client -> wait info from server about who first in next game
-
-	type of package:
-		server -> client : assign first and second player
-		server -> client : turn
-		server -> client : current score (after end game)
-		client -> server : turn
-		client -> server : end game + info about need new game
-
-
-Arhitecture:
+arhitecture:
 	
-	class GameKernel(size_of_field) (rename PlayingField)
-		do_turn(Tick/Toe, position) // need remove TickToe info from this method
-		reset(); // reset_game		
-
-		get_turn() // who do next?
-		end_game_check() // game status
-		
-	template <Pl1, Pl2>
-	class Game(Pl1, Pl2, size)
-		play() // return game result
-		       // start sequence of signals/slots that end when game over	
-		
-		signals:
-			firstPlayerDoTurn(Tick/Toe, position)
-			secondPlayerDoTurn(…)
-
-			firstPlayerNeedTurn()
-			secondPlayerNeedTurn()
-
-			gameStatusChenged(newGameStatus)
-
-	class Player
-		public:
-			need_turn() // use when need turn from this player
-			get_turn()  // use when turn has been made
-		
-		signals:
-			turnMade();
+	playing field <- game kernel <- game base 
 
 
-signals structure:
+	
+			cpu game
+	game base  <-   pl  game         where game base abstract interface class
+			net game
 
-Game : SIGNAL(needTurn(Player)) -> 
-      -> player : SLOT(calculateTurn(Player)) -> 
-      -> player : SIGNAL(turnDid(position)) ->
-      -> Game : SLOT(getTurn(position))
+	game widget and stat widget in main window and exchange information whit current 		game throw common interface
 
-if game is end -> Game : SIGNAL(endGame())
-else Game -> Signal(needTurn(OtherPlayer))
 
+
+game widget contain pointer to game base
 
 
 

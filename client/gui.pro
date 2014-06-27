@@ -9,21 +9,24 @@ INCLUDEPATH += .
 QT += widgets network
 
 CONFIG += c++11
+CONFIG += debug
 
 DESTDIR = /Users/Alexander/Projects/tic-tac-toe/build
 
 # Input
-HEADERS += playing_field.h \
-           playing_field_widget.h \
+HEADERS += game_kernel.h \
+           game_widget.h \
+           game_base.h \
            game_stat_widget.h \ 
            main_window.h \
-           client.h \
-           package.h
+           structurs.h \
+           playing_field.h
+           
            
 SOURCES += main.cpp \
-           playing_field.cpp \
-           playing_field_widget.cpp \
+           game_kernel.cpp \
+           game_widget.cpp \
            game_stat_widget.cpp \
            main_window.cpp \
-           client.cpp
-            
+           game_base.cpp \
+           playing_field.cpp

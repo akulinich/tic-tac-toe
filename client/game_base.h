@@ -49,7 +49,9 @@ public:
     }
 
 public slots:
-    virtual void getUserTurn(Position) = 0;
+    virtual void slotGetUserTurn(Position) = 0;
+    virtual void slotNewGame(bool) = 0;
+    virtual void slotGetNewGameDecision(bool) = 0;
 
 signals:
 // public signals
@@ -71,14 +73,56 @@ protected:
 };
 
 
-enum ClientStatus {
+////////////////////////////////////////////////
+////////////////////////////////////////////////
+/////////////////// NET GAME ///////////////////
+////////////////////////////////////////////////
+////////////////////////////////////////////////
+//
+// discribe package:
+// info of package:
+//
+// 1 - player number info: one int 
+//   (number)
+//     1 - you first player
+//     2 - you second player
+//
+// 2 - user info: 
+//     1 - turn info: four int
+//       (x) (y) 
+//           line and column
+//       (side)
+//         1 - you tick side
+//         2 - you toe side
+//       (player)
+//         1 - turn from first player
+//         2 - turn from second player
+//     2 - new_game_info: one int
+//       (decision)
+//         1 - yes, 2 - no  
+// 3 - end game (no data)
+//
+
+
+struct UserInfo {
+    int type_of_package, x, y, side, player, decision;
+    UserInfo(int x, int y, int side, int player) : type_of_package(1), x(x), y(y), side(side), player(player) {}
+    UserInfo(int decision) : type_of_package(2), decision(decision) {}
+    UserInfo() {}
+};
+
+
+enum ClientState {
     NOT_CONNECTED,
     CONNECTED,
-    WAIT_SIDE_INFO,
-    WAIT_TURN_INFO,
+    
+    WAIT_PLAYER_NUMBER,
+
     WAIT_USER_DECISION,
+    SEND_USER_DECISION,
     WAIT_NET_USER_DECISION,
-    WAIT_NEW_GAME_INFO
+
+    WAIT_NEW_GAME_INFO 
 };
 
 class NetGame : public GameBase {
@@ -86,44 +130,58 @@ Q_OBJECT
 
 public:
     NetGame(GameWidget* widget, int size, const QString& ip, int port);
-    void play();
-    ClientStatus getClientStatus();
-    void reset() {
-        game.resetGame();
-    }
+    ClientState getClientStatus();
+    void reset();
+    void play() {}
 
 private slots:
-    void slotReadyRead();
+    
+    void slotConnected();
+    void slotReadInfo();
     void slotError(QAbstractSocket::SocketError);
-    void slotReadyToPlay();
 
-    void getNetPlayerTurn(Turn decision);
-    void getUserTurn(Position pos);
+    void slotGetNetPlayerTurn(Turn decision);
+    void slotGetUserTurn(Position pos);
 
+    void slotGetNewGameDecision(bool);
+    void slotGetNewGameDecisionNetPLayer(bool);
 
-    // send (-1, need new game == true ? 1 : -1, -1, -1) when game end
-    void sendToServerGameOverSignal(bool need_new_game);
-    void sendToServerUserTurn(Turn decision);
+    void slotNewGame(bool);
 
 private:
-// net methods
-    void readSideInfo();
-    void readNetUserDecision();
-    void readNewGameInfo();
+    void sendPlayerNumber(int number);
+    void sendUserInfo(UserInfo info);
+    void sendEndGame();
+
+    void readPlayerNumber();
+    void readUserInfo();
+    void readEndGame();
+
+    
 
     QTcpSocket* socket;
-    ClientStatus status;
+    ClientState state;
     Player local_player;
+    Side local_player_side;
 
     GameWidget* game_widget;
 
+    int get_decisions_about_new_game;
+    bool need_new_game;
+
+
 signals:
-    void signalTurnRecived(Turn);
-    void signalNewGameDecisionNetPlayer(bool);
+    void signalNewGame(bool); // need or not need
     void signalWaitUserDecision();
 };
 
 
+
+////////////////////////////////////////////////
+////////////////////////////////////////////////
+/////////////////// CPU GAME ///////////////////
+////////////////////////////////////////////////
+////////////////////////////////////////////////
 
 enum CPUGameStatus {
     NOT_STARTED_CPU_GAME,
@@ -135,71 +193,18 @@ enum CPUGameStatus {
 class CPUGame : public GameBase {
 Q_OBJECT
 public:
-    CPUGame(GameWidget* widget, int size) : GameBase(size), widget(widget) {
-        connect(this, SIGNAL(signalWaitCPUDecision()), this, SLOT(getCPUTurn()));
-        user_player = PLAYER_ONE;
-        cpu_player = PLAYER_TWO;
-        user_player_side = TOE_SIDE;
-        cpu_player_side = TICK_SIDE;
-        state = NOT_STARTED_CPU_GAME;
-    }
+    CPUGame(GameWidget* widget, int size);
 
-    void play() {
-        user_player_side = user_player_side == TOE_SIDE ? TICK_SIDE : TOE_SIDE;
-        cpu_player_side = user_player_side == TOE_SIDE ? TICK_SIDE : TOE_SIDE;
-        game.start(user_player_side, cpu_player_side);
-        state = user_player_side == TICK_SIDE ? USER_TURN : CPU_TURN;
-
-        if (state == CPU_TURN) {
-            emit signalWaitCPUDecision();
-        } else {
-            emit signalWaitUserDecision();
-        }
-
-    }
-    void reset() {
-        game.resetGame();
-    }
+    void play();
+    void reset();
 
 public slots:
-    void getUserTurn(Position pos) {
-        if (state == CPUGameStatus::USER_TURN) {
-            if (!game.possiblyDecision(pos)) {
-                return;
-            }
+    void slotGetUserTurn(Position pos);
+    void slotNewGame(bool) {}
 
-            game.playerDecision(pos, user_player);
-            emit signalNewTurn(Turn(pos, game.getPlayerSide(user_player), user_player));
-            state = CPUGameStatus::CPU_TURN;
-            if (game.state() == PLAYER_ONE_WIN || game.state() == PLAYER_TWO_WIN 
-                    || game.state() == DRAW) {
-                state = WAIT_NEXT_GAME_INFO;
-                emit signalGameOver();
-            } else {
-                emit signalWaitCPUDecision();
-            }
-            game.print();
-        }
-    }
+    void slotGetCPUTurn();
 
-    void getCPUTurn() {
-        if (state == CPU_TURN) {
-            Position pos;
-            do {
-                pos.x_cor = rand() % game.size();
-                pos.y_cor = rand() % game.size();
-            } while(!game.possiblyDecision(pos));
-            std::cout << game.playerDecision(pos, cpu_player) << std::endl;
-            emit signalNewTurn(Turn(pos, game.getPlayerSide(cpu_player), cpu_player));
-            state = USER_TURN;
-            if (game.state() == PLAYER_ONE_WIN || game.state() == PLAYER_TWO_WIN 
-                    || game.state() == DRAW) {
-                state = CPUGameStatus::WAIT_NEXT_GAME_INFO;
-                emit signalGameOver();
-            }
-            game.print();
-        }
-    }
+    void slotGetNewGameDecision(bool);
 
 
 signals:
@@ -209,7 +214,7 @@ signals:
 
 private:
 
-    GameWidget* widget;
+    GameWidget* game_widget;
     Player user_player;
     Player cpu_player;
     Side user_player_side;
@@ -223,7 +228,9 @@ class UserGame : public GameBase {
 Q_OBJECT
 
 public slots:
-    void getUserTurn(Position) {}
+    void slotGetUserTurn(Position) {}
+    void slotNewGame(bool) {}
+    void slotGetNewGameDecision(bool) {}
 
 public:
     void play() {}

@@ -145,6 +145,7 @@ DIST          = ../../../Qt/5.3/clang_64/mkspecs/features/spec_pre.prf \
 		../../../Qt/5.3/clang_64/mkspecs/features/qt_config.prf \
 		../../../Qt/5.3/clang_64/mkspecs/macx-clang/qmake.conf \
 		../../../Qt/5.3/clang_64/mkspecs/features/spec_post.prf \
+		.qmake.stash \
 		../../../Qt/5.3/clang_64/mkspecs/features/exclusive_builds.prf \
 		../../../Qt/5.3/clang_64/mkspecs/features/default_pre.prf \
 		../../../Qt/5.3/clang_64/mkspecs/features/mac/default_pre.prf \
@@ -308,6 +309,7 @@ Makefile: server.pro ../../../Qt/5.3/clang_64/mkspecs/macx-clang/qmake.conf ../.
 		../../../Qt/5.3/clang_64/mkspecs/features/qt_config.prf \
 		../../../Qt/5.3/clang_64/mkspecs/macx-clang/qmake.conf \
 		../../../Qt/5.3/clang_64/mkspecs/features/spec_post.prf \
+		.qmake.stash \
 		../../../Qt/5.3/clang_64/mkspecs/features/exclusive_builds.prf \
 		../../../Qt/5.3/clang_64/mkspecs/features/default_pre.prf \
 		../../../Qt/5.3/clang_64/mkspecs/features/mac/default_pre.prf \
@@ -430,6 +432,7 @@ Makefile: server.pro ../../../Qt/5.3/clang_64/mkspecs/macx-clang/qmake.conf ../.
 ../../../Qt/5.3/clang_64/mkspecs/features/qt_config.prf:
 ../../../Qt/5.3/clang_64/mkspecs/macx-clang/qmake.conf:
 ../../../Qt/5.3/clang_64/mkspecs/features/spec_post.prf:
+.qmake.stash:
 ../../../Qt/5.3/clang_64/mkspecs/features/exclusive_builds.prf:
 ../../../Qt/5.3/clang_64/mkspecs/features/default_pre.prf:
 ../../../Qt/5.3/clang_64/mkspecs/features/mac/default_pre.prf:
@@ -1293,7 +1296,9 @@ server.o: server.cpp server.h \
 		../../../Qt/5.3/clang_64/lib/QtNetwork.framework/Versions/5/Headers/qsslerror.h \
 		../../../Qt/5.3/clang_64/lib/QtNetwork.framework/Versions/5/Headers/qsslkey.h \
 		../../../Qt/5.3/clang_64/lib/QtNetwork.framework/Versions/5/Headers/qsslsocket.h \
-		../../../Qt/5.3/clang_64/lib/QtNetwork.framework/Versions/5/Headers/qtnetworkversion.h
+		../../../Qt/5.3/clang_64/lib/QtNetwork.framework/Versions/5/Headers/qtnetworkversion.h \
+		../../../Qt/5.3/clang_64/lib/QtCore.framework/Versions/5/Headers/QtDebug \
+		../../../Qt/5.3/clang_64/lib/QtCore.framework/Versions/5/Headers/qdebug.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o server.o server.cpp
 
 moc_server.o: moc_server.cpp 

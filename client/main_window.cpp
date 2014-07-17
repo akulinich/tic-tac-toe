@@ -26,14 +26,12 @@ MainWindow::MainWindow() {
 
     // main widgets
     game_field = new GameWidget(field_size, cell_size);
-    new_game_button = new QPushButton("new game");
     stat = new GameStatWidget;
     
     // signal-slot conection
-    connect(new_game_button, SIGNAL(clicked()), 
-                    game_field, SLOT(newGame()));
-    connect(game_field, SIGNAL(endGame(GameState)), 
+    connect(game_field, SIGNAL(signalEndGame(GameState)), 
                      stat, SLOT(increase_counter(GameState)));
+    connect(game_field, SIGNAL(signalNoGame()), this, SLOT(setAllGameTypeCheckedFalse()));
 
 
     // layout setup
@@ -42,7 +40,6 @@ MainWindow::MainWindow() {
 
     main_layout->addWidget(stat);
     main_layout->addWidget(game_field);
-    main_layout->addWidget(new_game_button);
 
     main_widget->setLayout(main_layout); 
 
@@ -50,6 +47,12 @@ MainWindow::MainWindow() {
     create_menus();
 
     setWindowTitle(tr("Tic-Tac-Toe"));
+}
+
+void MainWindow::setAllGameTypeCheckedFalse() {
+    set_pl_vs_cpu->setChecked(false);
+    set_pl_vs_pl->setChecked(false);
+    set_net->setChecked(false);
 }
 
 void MainWindow::create_menus() {
@@ -95,7 +98,6 @@ void MainWindow::create_actios() {
     set_net = new QAction("Net game", this);
     connect(set_net, SIGNAL(triggered()), game_field, SLOT(setPlayerVsNet()));
     connect(set_net, SIGNAL(triggered()), stat, SLOT(reset_counters()));
-    connect(set_net, SIGNAL(triggered()), game_field, SLOT(newGame()));
     set_net->setCheckable(true);
     // set_net->setEnabled(false);
     

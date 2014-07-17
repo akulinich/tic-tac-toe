@@ -1,6 +1,8 @@
 #include "structurs.h"
 #include "game_kernel.h"
 
+#include <algorithm>
+
 const int LENGHT_LINE_TO_WIN = 5;
 
 GameKernel::GameKernel(int size_of_field) : field(size_of_field) {
@@ -45,6 +47,9 @@ bool GameKernel::playerDecision(Position pos, Player player) {
 GameState GameKernel::state() const {
     return game_state;
 }
+
+
+
 bool GameKernel::possiblyDecision(Position pos) {
     return field[pos] == EMPTY;
 }
@@ -145,4 +150,6 @@ bool GameKernel::gameOver() {
 int GameKernel::size() const {
     return field.size();
 }
+
+
 

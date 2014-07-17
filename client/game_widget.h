@@ -11,7 +11,8 @@
 enum GameType {
     PlVsPl,
     PlVsCPU,
-    PlVsNet
+    PlVsNet,
+    NoGame
 };
 
 class GameBase;
@@ -35,6 +36,10 @@ private:
     QString ip;
     int port;
 
+    bool need_new_game;
+
+    QWidget* need_new_game_widget;
+
 protected:
     void paintEvent(QPaintEvent* pe);
     void mouseReleaseEvent(QMouseEvent* pe);
@@ -43,13 +48,17 @@ public:
     GameWidget(int size_of_field, int cell_size, QWidget* widget = 0);
 
 signals:
-    void endGame(GameState);
+    void signalEndGame(GameState);
     void mouseClicked(Position);
+    void needNewGame(bool);
+    void signalNoGame();
 
 public slots:
+    void emitNoGameSignal();
+
     void raizeEndGame();
-    void newGame();
-    void addTurn(Turn);
+    void clear();
+    void endGame(GameState);
 
     void setPlayerVsPlayer();
     void setPlayerVsCPU();
@@ -57,6 +66,13 @@ public slots:
 
     void setIpAndPort();
     void createPlayerVsNetGame();
+
+    void showNeedNewGameWindow();
+
+    void needNewGameYes();
+    void needNewGameNo();
+
+    void slotNewTurn(Turn turn);
 };
 
 #endif

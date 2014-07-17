@@ -30,14 +30,12 @@ GameWidget::GameWidget(int size_of_field, int cell_size, QWidget* widget)
     setMinimumSize(size());
     setMaximumSize(size());
 
-    game->play();
-
     ip = "0.0.0.0";
     port = 8080;
 }
 
 
-void GameWidget::addTurn(Turn turn) {
+void GameWidget::slotNewTurn(Turn turn) {
     QPoint center(turn.pos.x_cor * cell_size, turn.pos.y_cor * cell_size);
 
     center.rx() = (center.x() / cell_size) * cell_size + cell_size / 2;
@@ -102,26 +100,17 @@ void GameWidget::paintEvent(QPaintEvent* pe) {
     }
 }
 
-void GameWidget::newGame() {
-    qDebug() << "game widget new game";
+void GameWidget::clear() {
     ticks.clear();
     toes.clear();
-    game->reset();
+
     repaint();
+}
 
-    if (type == PlVsPl) {
-        setPlayerVsPlayer();
-    }
-
-    if (type == PlVsCPU) {
-        setPlayerVsCPU();
-    }
-
-    if (type == PlVsNet) {
-        setPlayerVsNet();
-    }
-    
-    game->play();
+void GameWidget::endGame(GameState result) {
+    qDebug() << "GameWidget::endGame" << sender();
+    showNeedNewGameWindow();
+    emit signalEndGame(result);
 }
 
 void GameWidget::raizeEndGame() {
@@ -131,21 +120,17 @@ void GameWidget::raizeEndGame() {
 void GameWidget::setPlayerVsPlayer() {
     delete game;
     game = new UserGame();
-    connect(this, SIGNAL(mouseClicked(Position)), game, SLOT(getUserTurn(Position)));
-    connect(game, SIGNAL(signalNewTurn(Turn)), this, SLOT(addTurn(Turn)));
-    connect(game, SIGNAL(signalGameOver()), this, SLOT(raizeEndGame()));
-
+    connect(this, SIGNAL(mouseClicked(Position)), game, SLOT(slotGetUserTurn(Position)));
     type = PlVsPl;
+    clear();
 }
 
 void GameWidget::setPlayerVsCPU() {
     delete game;
     game = new CPUGame(this, field_size);
-    connect(this, SIGNAL(mouseClicked(Position)), game, SLOT(getUserTurn(Position)));
-    connect(game, SIGNAL(signalNewTurn(Turn)), this, SLOT(addTurn(Turn)));
-    connect(game, SIGNAL(signalGameOver()), this, SLOT(raizeEndGame()));
-
+    connect(this, SIGNAL(mouseClicked(Position)), game, SLOT(slotGetUserTurn(Position)));
     type = PlVsCPU;
+    clear();
 }
 
 void GameWidget::setIpAndPort() {
@@ -156,13 +141,16 @@ void GameWidget::setIpAndPort() {
 }
 
 void GameWidget::createPlayerVsNetGame() {
+    qDebug() << "createPlayerVsNetGame";
+
     delete game;
+
     game = new NetGame(this, field_size, ip, port);
-    connect(this, SIGNAL(mouseClicked(Position)), game, SLOT(getUserTurn(Position)));
-    connect(game, SIGNAL(signalNewTurn(Turn)), this, SLOT(addTurn(Turn)));
-    connect(game, SIGNAL(signalGameOver()), this, SLOT(raizeEndGame()));
+    connect(this, SIGNAL(mouseClicked(Position)), game, SLOT(slotGetUserTurn(Position)));
 
     type = PlVsNet;
+
+    clear();
 }
 
 
@@ -194,6 +182,46 @@ void GameWidget::setPlayerVsNet() {
 
     input_ip_and_port->setLayout(main_layout);
     input_ip_and_port->show();
+}
+
+void GameWidget::showNeedNewGameWindow() {
+    qDebug() << "showNeedNewGameWindow" << sender();
+
+    need_new_game_widget = new QWidget;
+    QLabel* quation_label = new QLabel("Do you want new game whit this player?");
+    QPushButton* need_button = new QPushButton("Yes");
+    QPushButton* not_need_button = new QPushButton("No");
+
+    QVBoxLayout* main_layout = new QVBoxLayout;
+
+    main_layout->addWidget(quation_label);
+
+    QHBoxLayout* button_layout = new QHBoxLayout;
+    button_layout->addWidget(not_need_button);
+    button_layout->addWidget(need_button);
+
+    main_layout->addLayout(button_layout);
+
+    need_new_game_widget->setLayout(main_layout);
+    need_new_game_widget->show();
+
+    connect(need_button, SIGNAL(clicked()), this, SLOT(needNewGameYes()));
+    connect(not_need_button, SIGNAL(clicked()), this, SLOT(needNewGameNo()));
+}
+
+void GameWidget::needNewGameYes() {
+    delete need_new_game_widget;
+    game->slotGetNewGameDecision(true);
+}
+
+void GameWidget::needNewGameNo() {
+    delete need_new_game_widget;
+    game->slotGetNewGameDecision(false);
+    emit signalNoGame();
+}
+
+void GameWidget::emitNoGameSignal() {
+    emit signalNoGame();
 }
 
 #endif

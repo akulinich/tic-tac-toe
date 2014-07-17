@@ -1,82 +1,246 @@
+#ifndef SERVER_CPP
+#define SERVER_CPP
 #include "server.h"
+
+#include <iostream>
 
 #include <QtGui>
 #include <QtWidgets>
 #include <QtNetwork>
+#include <QtDebug>
 
 
-Server::Server(int port, QWidget* widget)
-    : QWidget(widget) {
-        server = new QTcpServer(this);
-        // listen has two parametrs:
-        // first is IP
-        // second is port
-        if (!server->listen(QHostAddress::Any, port)) {
+QDataStream& operator<<(QDataStream& stream, UserInfo& info) {
+    stream << info.type_of_package;
+    if (info.type_of_package == 1) {
+        stream << info.x << info.y << info.side << info.player;
+    }
+
+    if (info.type_of_package == 2) {
+        stream << info.decision << 0 << 0 << 0;
+    }
+    return stream;
+}
+
+QDataStream& operator>>(QDataStream& stream, UserInfo& info) {
+    stream >> info.type_of_package;
+    if (info.type_of_package == 1) {
+        stream >> info.x >> info.y >> info.side >> info.player;
+    }
+
+    if (info.type_of_package == 2) {
+        int fake;
+        stream >> info.decision >> fake >> fake >> fake;
+    }
+    return stream;
+}
+
+Server::Server(int port, QWidget* widget) : QWidget(widget) {
+    server = new QTcpServer(this);
+    if (!server->listen(QHostAddress::Any, port)) {
             QMessageBox::critical(this, tr("Server Erorr"),
                               tr("Unable to start the server: %1.")
                               .arg(server->errorString()));
             close();
             return;
-        }
-        connect(server, SIGNAL(newConnection()), this, SLOT(slot_new_connection()));
+    }
+    set_players = new QPushButton("Connect players");
+    clear_players = new QPushButton("Clear players");
 
-        output_log = new QTextEdit;
-        output_log->setReadOnly(true);
+    state = PLAYERS_NOT_SETED;
 
-        // layout setup
-        QVBoxLayout* layout = new QVBoxLayout;
-        layout->addWidget(new QLabel("server started"));
-        layout->addWidget(output_log);
-        setLayout(layout);
 
-        available_bytes = 0;
+    // layout
+    QVBoxLayout* main_layout = new QVBoxLayout;
+
+    all_avaliable_players = new QListWidget;
+    choosen_players = new QListWidget;
+
+    QHBoxLayout* lists_of_player_layout = new QHBoxLayout;
+    lists_of_player_layout->addWidget(choosen_players);
+    lists_of_player_layout->addWidget(all_avaliable_players);
+
+    QHBoxLayout* list_of_buttons = new QHBoxLayout;
+    list_of_buttons->addWidget(clear_players);
+    list_of_buttons->addWidget(set_players);
+
+    main_layout->addLayout(lists_of_player_layout);
+    main_layout->addLayout(list_of_buttons);
+
+    setLayout(main_layout);
+
+
+    // connections
+    connect(server, SIGNAL(newConnection()), this, SLOT(slotNewConnection()));
+    connect(set_players, SIGNAL(clicked()), this, SLOT(slotSetNewPlayers()));
+    connect(clear_players, SIGNAL(clicked()), this, SLOT(slotResetPlayers()));
+    connect(all_avaliable_players, SIGNAL(itemClicked(QListWidgetItem*)),
+        this, SLOT(slotAddPlayerInChoosenList(QListWidgetItem*)));
 }
 
-void Server::slot_new_connection() {
+/////////////////////////////
+// manipulations with players
+
+void Server::slotNewConnection() {
     QTcpSocket* socket = server->nextPendingConnection();
+    sockets.push_back(NetPlayer(socket, QString("player %1").arg(sockets.size())));
 
     connect(socket, SIGNAL(disconnected()), socket, SLOT(deleteLater()));
-    connect(socket, SIGNAL(readyRead()), this, SLOT(slot_get_turn()));
+    connect(socket, SIGNAL(readyRead()), this, SLOT(slotReadInfo()));
 
-    send_to_client(socket, "Accept");
+    redrawLists();
 }
 
-void Server::send_to_client(QTcpSocket* client, const QString& str) {
-    QByteArray arrBlock;
-    QDataStream out(&arrBlock, QIODevice::WriteOnly);
-    out.setVersion(QDataStream::Qt_4_8);
-    out << quint16(0) << QTime::currentTime() << str;
-    out.device()->seek(0);
-    out << (quint16(arrBlock.size()) - quint16(sizeof(quint16)));
 
-    client->write(arrBlock);
-}
+void Server::redrawLists() {
+    all_avaliable_players->clear();
+    choosen_players->clear();
+    for (int i = 0; i < sockets.size(); ++i) {   
+        QListWidgetItem* item = new QListWidgetItem(sockets[i].name);
+        all_avaliable_players->insertItem(all_avaliable_players->count(), item);
+    }
 
-void Server::slot_get_turn() {
-    QTcpSocket* socket = (QTcpSocket*)sender();
-    QDataStream in(socket);
-    in.setVersion(QDataStream::Qt_4_8);
-    for (;;) {
-        if(available_bytes == 0) {
-            if (socket->bytesAvailable() < sizeof(quint16)) {
-                break;
-            }
-            in >> available_bytes;
-        }
-
-        if (socket->bytesAvailable() < available_bytes) {
-            break;
-        }
-
-        QTime time; 
-        QString str;
-        in >> time >> str;
-
-        QString message = time.toString() + " " + "Client has sent — " + str;
-        output_log->append(message);
-        available_bytes = 0;
-        send_to_client(socket, "Recived");
+    for (int i = 0; i < choosen_sockets.size(); ++i) {
+        QListWidgetItem* item = new QListWidgetItem(choosen_sockets[i].name);
+        choosen_players->insertItem(choosen_players->count(), item);
     }
 }
+
+void Server::slotSetNewPlayers() {
+    if (state != PLAYERS_NOT_SETED) {
+        std::cout << "players already seted" << std::endl;
+        return;
+    }
+
+    if (choosen_players->count() == 2) {
+        player_one = choosen_sockets[0];
+        player_two = choosen_sockets[1];
+        connect(player_one.socket, SIGNAL(readyRead()), this, SLOT(slotReadInfo()));
+        connect(player_two.socket, SIGNAL(readyRead()), this, SLOT(slotReadInfo()));
+
+        state = PLAYERS_SETED;
+
+        sendPlayerNumber(player_one.socket, 1);
+        sendPlayerNumber(player_two.socket, 2);
+    } else {
+        std::cout << "wrong count of players" << std::endl;
+    }
+}
+
+void Server::slotResetPlayers() {
+    player_one.socket = NULL;
+    player_two.socket = NULL;
+    choosen_players->clear();
+}
+
+
+void Server::slotAddPlayerInChoosenList(QListWidgetItem* choosen_item) {
+    std::cout << "add player in chosen list" << std::endl;
+    if (choosen_players->count() < 2) {
+        std::cout << choosen_item << std::endl;
+        choosen_sockets.push_back(sockets[all_avaliable_players->row(choosen_item)]);
+        redrawLists();
+        std::cout << choosen_item << std::endl;
+        std::cout << "added" << std::endl;
+    }
+}
+
+
+
+/////////////////////
+// read and send info
+
+void Server::slotReadInfo() {
+    qDebug() << "slotReadInfo";
+    QTcpSocket* socket = static_cast<QTcpSocket*>(sender());
+    QDataStream in(socket);
+    in.setVersion(QDataStream::Qt_4_8);
+    if (socket->bytesAvailable() < qint64(sizeof(int))) {return;}
+
+    int type_of_package;
+
+    in >> type_of_package;
+
+    switch (type_of_package) {
+        case 1: readPlayerNumber(socket);
+            break;
+        case 2: readUserInfo(socket);
+            break;
+        case 3: readEndGame(socket);
+            break;
+    }
+}
+
+void Server::readPlayerNumber(QTcpSocket* socket) {
+    qDebug() << "readPlayerNumber";
+    QDataStream in(socket);
+    in.setVersion(QDataStream::Qt_4_8);
+    while(true) {
+        if (socket->bytesAvailable() < qint64(sizeof(int))) {
+            continue;
+        }
+
+        int number;
+        in >> number;
+        break;
+    }
+}
+
+void Server::readUserInfo(QTcpSocket* socket) {
+    qDebug() << "readUserInfo";
+    QDataStream in(socket);
+    in.setVersion(QDataStream::Qt_4_8);
+    while(true) {
+        if (socket->bytesAvailable() < 5 * qint64(sizeof(int))) {
+            continue;
+        }
+        UserInfo info;
+        in >> info;
+        if (socket == player_one.socket) {
+            sendUserInfo(player_two.socket, info);    
+        } else {
+            sendUserInfo(player_one.socket, info);
+        }
+        break;
+    }
+}
+
+void Server::readEndGame(QTcpSocket* socket) {
+    qDebug() << "readEndGame";
+}
+
+void Server::sendPlayerNumber(QTcpSocket* socket, int number) {
+    qDebug() << "sendPlayerNumber";
+
+    QByteArray data;
+    QDataStream out(&data, QIODevice::WriteOnly);
+    out.setVersion(QDataStream::Qt_4_8);
+    out << int(1) << number;
+    socket->write(data);
+}
+
+void Server::sendUserInfo(QTcpSocket* socket, UserInfo info) {
+    qDebug() << "sendUserInfo";
+
+    QByteArray data;
+    QDataStream out(&data, QIODevice::WriteOnly);
+    out.setVersion(QDataStream::Qt_4_8);
+    out << int(2) << info;
+    socket->write(data);
+}
+
+void Server::sendEndGame(QTcpSocket* socket) {
+    qDebug() << "sendEndGame";
+    QByteArray data;
+    QDataStream out(&data, QIODevice::WriteOnly);
+    out.setVersion(QDataStream::Qt_4_8);
+    out << int(3);
+    socket->write(data);
+}
+
+
+
+#endif
+
 
 

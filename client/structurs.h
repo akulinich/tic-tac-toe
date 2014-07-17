@@ -17,6 +17,7 @@ enum GameState {
     DRAW
 };
 
+
 enum Side {
     TICK_SIDE,
     TOE_SIDE

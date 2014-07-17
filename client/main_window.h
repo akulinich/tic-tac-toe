@@ -14,6 +14,9 @@ Q_OBJECT
 public: 
     MainWindow();
 
+private slots:
+    void setAllGameTypeCheckedFalse();
+
 private:
     void create_menus();
     void create_actios();
@@ -22,7 +25,6 @@ private:
     // game attributes
     GameWidget* game_field;
     GameStatWidget* stat;
-    QPushButton* new_game_button;
 
 
     // menus

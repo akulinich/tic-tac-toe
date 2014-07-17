@@ -29,11 +29,13 @@ public:
     bool playerDecision(Position pos, Player player);
 
     GameState state() const;
+    
     bool possiblyDecision(Position pos);
     int sizeOfField();
     Side getPlayerSide(Player player);
 
     void resetGame();
+
 
     void print() const;
     int size() const;

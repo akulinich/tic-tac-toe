@@ -12,9 +12,9 @@ MAKEFILE      = Makefile
 
 CC            = /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang
 CXX           = /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang++
-DEFINES       = -DQT_WIDGETS_LIB -DQT_NETWORK_LIB -DQT_GUI_LIB -DQT_CORE_LIB
-CFLAGS        = -pipe -g -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -mmacosx-version-min=10.7 -Wall -W -fPIE $(DEFINES)
-CXXFLAGS      = -pipe -g -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -std=c++11 -stdlib=libc++ -mmacosx-version-min=10.7 -Wall -W -fPIE $(DEFINES)
+DEFINES       = -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_NETWORK_LIB -DQT_GUI_LIB -DQT_CORE_LIB
+CFLAGS        = -pipe -O2 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -mmacosx-version-min=10.7 -Wall -W -fPIE $(DEFINES)
+CXXFLAGS      = -pipe -O2 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -std=c++11 -stdlib=libc++ -mmacosx-version-min=10.7 -Wall -W -fPIE $(DEFINES)
 INCPATH       = -I../../../Qt/5.3/clang_64/mkspecs/macx-clang -I. -I. -I../../../Qt/5.3/clang_64/lib/QtWidgets.framework/Versions/5/Headers -I../../../Qt/5.3/clang_64/lib/QtNetwork.framework/Versions/5/Headers -I../../../Qt/5.3/clang_64/lib/QtGui.framework/Versions/5/Headers -I../../../Qt/5.3/clang_64/lib/QtCore.framework/Versions/5/Headers -I. -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk/System/Library/Frameworks/OpenGL.framework/Versions/A/Headers -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk/System/Library/Frameworks/AGL.framework/Headers -F/Users/Alexander/Qt/5.3/clang_64/lib
 LINK          = /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang++
 LFLAGS        = -headerpad_max_install_names -Wl,-syslibroot,/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -stdlib=libc++ -mmacosx-version-min=10.7
@@ -196,7 +196,7 @@ TARGET        = ../build/Tic-Tac-Toe.app/Contents/MacOS/Tic-Tac-Toe
 
 ####### Custom Compiler Variables
 QMAKE_COMP_QMAKE_OBJECTIVE_CFLAGS = -pipe \
-		-g \
+		-O2 \
 		-isysroot \
 		/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk \
 		-std=c++11 \

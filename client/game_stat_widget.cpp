@@ -24,11 +24,11 @@ GameStatWidget::GameStatWidget(QWidget* widget)
     main_layout->addWidget(new QWidget(this), 2, 7);
 
     main_layout->addWidget(new QWidget(this), 1, 1);
-    main_layout->addWidget(new QLabel("tick wins"), 1, 2);
+    main_layout->addWidget(new QLabel("Player one wins"), 1, 2);
     main_layout->addWidget(new QWidget(this), 1, 3);
-    main_layout->addWidget(new QLabel("draws"), 1, 4);
+    main_layout->addWidget(new QLabel("Draws"), 1, 4);
     main_layout->addWidget(new QWidget(this), 1, 5);
-    main_layout->addWidget(new QLabel("toe wins"), 1, 6);
+    main_layout->addWidget(new QLabel("Player two wins"), 1, 6);
     main_layout->addWidget(new QWidget(this), 1, 7);
     setLayout(main_layout);
 

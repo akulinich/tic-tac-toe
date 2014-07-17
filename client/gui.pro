@@ -9,7 +9,8 @@ INCLUDEPATH += .
 QT += widgets network
 
 CONFIG += c++11
-CONFIG += debug
+# CONFIG += debug
+CONFIG += console
 
 DESTDIR = /Users/Alexander/Projects/tic-tac-toe/build
 

@@ -4,6 +4,9 @@ tic-tac-toe let’s go!
 1. console application ––– done
 2. add graphic         ––– done (redesign in future)
 3. add network         ––– in progress
+3.1. write server      ––– in progress
+3.2. write client      ––– done
+
 4. port to win, iOS    ––– (hold over, need developer account)
 
 
@@ -24,9 +27,31 @@ arhitecture:
 game widget contain pointer to game base
 
 
+player                    server
+1. connect ->             acces connection <-
+send some data            receive some data 
+
+
+2. wait info from server  if player are used then send info that it used.
+about you used
+send to server 
+confirmation 
+
+first fake question about need new game
+start game iteration
+
+3. Game
+			  when confirmation received send side info
+receive side info
+send side info received
+			  receive confirmation
+sand turn (or wait receive net turn)  
 
 
 
+request -> answer
+request -> answer
+request -> answer
 
 
 

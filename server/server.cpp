@@ -36,6 +36,7 @@ QDataStream& operator>>(QDataStream& stream, UserInfo& info) {
 }
 
 Server::Server(int port, QWidget* widget) : QWidget(widget) {
+    qDebug() << "constructor";
     server = new QTcpServer(this);
     if (!server->listen(QHostAddress::Any, port)) {
             QMessageBox::critical(this, tr("Server Erorr"),
@@ -53,6 +54,8 @@ Server::Server(int port, QWidget* widget) : QWidget(widget) {
     // layout
     QVBoxLayout* main_layout = new QVBoxLayout;
 
+    server_state_info = new QLabel("PLayers not seted");
+
     all_avaliable_players = new QListWidget;
     choosen_players = new QListWidget;
 
@@ -64,6 +67,7 @@ Server::Server(int port, QWidget* widget) : QWidget(widget) {
     list_of_buttons->addWidget(clear_players);
     list_of_buttons->addWidget(set_players);
 
+    main_layout->addWidget(server_state_info);
     main_layout->addLayout(lists_of_player_layout);
     main_layout->addLayout(list_of_buttons);
 
@@ -82,11 +86,43 @@ Server::Server(int port, QWidget* widget) : QWidget(widget) {
 // manipulations with players
 
 void Server::slotNewConnection() {
+    qDebug() << "slotNewConnection";
     QTcpSocket* socket = server->nextPendingConnection();
     sockets.push_back(NetPlayer(socket, QString("player %1").arg(sockets.size())));
 
-    connect(socket, SIGNAL(disconnected()), socket, SLOT(deleteLater()));
+    connect(socket, SIGNAL(disconnected()), this, SLOT(slotLoseConnection()));
     connect(socket, SIGNAL(readyRead()), this, SLOT(slotReadInfo()));
+
+    redrawLists();
+}
+
+void Server::slotLoseConnection() {
+    QTcpSocket* socket = static_cast<QTcpSocket*>(sender());
+    socket->deleteLater();
+
+    for (int i = 0; i < sockets.size(); ++i) {
+        if (sockets[i].socket == socket) {
+            sockets.remove(i);
+            break;
+        }
+    }
+
+   
+    if (choosen_sockets[0].socket == socket) {
+        if (state != PLAYERS_NOT_SETED) { 
+            sendPlayerDisconnected(choosen_sockets[1].socket);
+        }
+        state = PLAYERS_NOT_SETED;
+        choosen_sockets.remove(0);
+    }
+    if (choosen_sockets[1].socket == socket) {
+        if (state != PLAYERS_NOT_SETED) { 
+            sendPlayerDisconnected(choosen_sockets[0].socket);
+        }
+        state = PLAYERS_NOT_SETED;
+        choosen_sockets.remove(1);
+    }
+
 
     redrawLists();
 }
@@ -107,6 +143,7 @@ void Server::redrawLists() {
 }
 
 void Server::slotSetNewPlayers() {
+    qDebug() << "slotSetNewPlayers";
     if (state != PLAYERS_NOT_SETED) {
         std::cout << "players already seted" << std::endl;
         return;
@@ -131,6 +168,7 @@ void Server::slotResetPlayers() {
     player_one.socket = NULL;
     player_two.socket = NULL;
     choosen_players->clear();
+    choosen_sockets.clear();
 }
 
 
@@ -235,6 +273,15 @@ void Server::sendEndGame(QTcpSocket* socket) {
     QDataStream out(&data, QIODevice::WriteOnly);
     out.setVersion(QDataStream::Qt_4_8);
     out << int(3);
+    socket->write(data);
+}
+
+void Server::sendPlayerDisconnected(QTcpSocket* socket) {
+    qDebug() << "sendPlayerDisconnected";
+    QByteArray data;
+    QDataStream out(&data, QIODevice::WriteOnly);
+    out.setVersion(QDataStream::Qt_4_8);
+    out << int(4);
     socket->write(data);
 }
 

@@ -101,6 +101,7 @@ protected:
 //       (decision)
 //         1 - yes, 2 - no  
 // 3 - end game (no data)
+// 4 - disconnection 
 //
 
 
@@ -156,6 +157,7 @@ private:
     void readPlayerNumber();
     void readUserInfo();
     void readEndGame();
+    void readPlayerDisconnected();
 
     
 

@@ -134,6 +134,8 @@ void NetGame::slotReadInfo() {
             break;
         case 3: readEndGame();
             break;
+        case 4: readPlayerDisconnected();
+            break;
     } 
 }
 
@@ -196,6 +198,26 @@ void NetGame::readUserInfo() {
     }
 }
 
+void NetGame::readPlayerDisconnected() {
+    qDebug() << "readPlayerDisconnected";
+        qDebug() << "readPlayerNumber";
+    QDataStream in(socket);
+    in.setVersion(QDataStream::Qt_4_8);
+    while(true) {
+        if (socket->bytesAvailable() < qint64(sizeof(int))) {
+            continue;
+        }
+
+        int number;
+        in >> number;
+
+        // what do when disconnected?
+
+        break;
+    }
+
+}
+
 void NetGame::readEndGame() {
     qDebug() << "readEndGame";
 }
@@ -209,6 +231,8 @@ void NetGame::sendPlayerNumber(int number) {
     out << int(1) << number;
     socket->write(data);
 }
+
+
 
 void NetGame::sendUserInfo(UserInfo info) {
     qDebug() << "sendUserInfo";

@@ -52,6 +52,7 @@ signals:
     void mouseClicked(Position);
     void needNewGame(bool);
     void signalNoGame();
+    void signalSendMessage(const QString&);
 
 public slots:
     void emitNoGameSignal();

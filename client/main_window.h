@@ -14,8 +14,10 @@ Q_OBJECT
 public: 
     MainWindow();
 
-private slots:
+public slots:
     void setAllGameTypeCheckedFalse();
+    void setGameStateLine(const QString& str);
+    void slotEndGame(GameState result);
 
 private:
     void create_menus();
@@ -25,6 +27,7 @@ private:
     // game attributes
     GameWidget* game_field;
     GameStatWidget* stat;
+    QLabel* game_state_line;
 
 
     // menus

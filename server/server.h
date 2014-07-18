@@ -27,6 +27,8 @@
 //       (decision)
 //         1 - yes, 2 - no  
 // 3 - end game (no data)
+// 4 - disconnection     
+//
 //
 
 struct UserInfo {
@@ -84,6 +86,7 @@ private:
     void sendPlayerNumber(QTcpSocket* socket, int number);
     void sendUserInfo(QTcpSocket* socket, UserInfo info);
     void sendEndGame(QTcpSocket* socket);
+    void sendPlayerDisconnected(QTcpSocket* socket);
 
     void readPlayerNumber(QTcpSocket* socket);
     void readUserInfo(QTcpSocket* socket);
@@ -97,11 +100,14 @@ private:
     QListWidget* all_avaliable_players;
     QListWidget* choosen_players;
 
+    QLabel* server_state_info;
+
     void redrawLists();
 
 private slots:
 
     void slotNewConnection();
+    void slotLoseConnection();
 
     void slotSetNewPlayers();
     void slotResetPlayers();

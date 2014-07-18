@@ -19,8 +19,8 @@
 
 QT_BEGIN_MOC_NAMESPACE
 struct qt_meta_stringdata_GameWidget_t {
-    QByteArrayData data[23];
-    char stringdata[283];
+    QByteArrayData data[24];
+    char stringdata[301];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -37,30 +37,32 @@ QT_MOC_LITERAL(4, 36, 12),
 QT_MOC_LITERAL(5, 49, 8),
 QT_MOC_LITERAL(6, 58, 11),
 QT_MOC_LITERAL(7, 70, 12),
-QT_MOC_LITERAL(8, 83, 16),
-QT_MOC_LITERAL(9, 100, 12),
-QT_MOC_LITERAL(10, 113, 5),
-QT_MOC_LITERAL(11, 119, 7),
-QT_MOC_LITERAL(12, 127, 17),
-QT_MOC_LITERAL(13, 145, 14),
-QT_MOC_LITERAL(14, 160, 14),
-QT_MOC_LITERAL(15, 175, 12),
-QT_MOC_LITERAL(16, 188, 21),
-QT_MOC_LITERAL(17, 210, 21),
-QT_MOC_LITERAL(18, 232, 14),
-QT_MOC_LITERAL(19, 247, 13),
-QT_MOC_LITERAL(20, 261, 11),
-QT_MOC_LITERAL(21, 273, 4),
-QT_MOC_LITERAL(22, 278, 4)
+QT_MOC_LITERAL(8, 83, 17),
+QT_MOC_LITERAL(9, 101, 16),
+QT_MOC_LITERAL(10, 118, 12),
+QT_MOC_LITERAL(11, 131, 5),
+QT_MOC_LITERAL(12, 137, 7),
+QT_MOC_LITERAL(13, 145, 17),
+QT_MOC_LITERAL(14, 163, 14),
+QT_MOC_LITERAL(15, 178, 14),
+QT_MOC_LITERAL(16, 193, 12),
+QT_MOC_LITERAL(17, 206, 21),
+QT_MOC_LITERAL(18, 228, 21),
+QT_MOC_LITERAL(19, 250, 14),
+QT_MOC_LITERAL(20, 265, 13),
+QT_MOC_LITERAL(21, 279, 11),
+QT_MOC_LITERAL(22, 291, 4),
+QT_MOC_LITERAL(23, 296, 4)
     },
     "GameWidget\0signalEndGame\0\0GameState\0"
     "mouseClicked\0Position\0needNewGame\0"
-    "signalNoGame\0emitNoGameSignal\0"
-    "raizeEndGame\0clear\0endGame\0setPlayerVsPlayer\0"
-    "setPlayerVsCPU\0setPlayerVsNet\0"
-    "setIpAndPort\0createPlayerVsNetGame\0"
-    "showNeedNewGameWindow\0needNewGameYes\0"
-    "needNewGameNo\0slotNewTurn\0Turn\0turn"
+    "signalNoGame\0signalSendMessage\0"
+    "emitNoGameSignal\0raizeEndGame\0clear\0"
+    "endGame\0setPlayerVsPlayer\0setPlayerVsCPU\0"
+    "setPlayerVsNet\0setIpAndPort\0"
+    "createPlayerVsNetGame\0showNeedNewGameWindow\0"
+    "needNewGameYes\0needNewGameNo\0slotNewTurn\0"
+    "Turn\0turn"
 };
 #undef QT_MOC_LITERAL
 
@@ -70,39 +72,41 @@ static const uint qt_meta_data_GameWidget[] = {
        7,       // revision
        0,       // classname
        0,    0, // classinfo
-      17,   14, // methods
+      18,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
        0,       // flags
-       4,       // signalCount
+       5,       // signalCount
 
  // signals: name, argc, parameters, tag, flags
-       1,    1,   99,    2, 0x06 /* Public */,
-       4,    1,  102,    2, 0x06 /* Public */,
-       6,    1,  105,    2, 0x06 /* Public */,
-       7,    0,  108,    2, 0x06 /* Public */,
+       1,    1,  104,    2, 0x06 /* Public */,
+       4,    1,  107,    2, 0x06 /* Public */,
+       6,    1,  110,    2, 0x06 /* Public */,
+       7,    0,  113,    2, 0x06 /* Public */,
+       8,    1,  114,    2, 0x06 /* Public */,
 
  // slots: name, argc, parameters, tag, flags
-       8,    0,  109,    2, 0x0a /* Public */,
-       9,    0,  110,    2, 0x0a /* Public */,
-      10,    0,  111,    2, 0x0a /* Public */,
-      11,    1,  112,    2, 0x0a /* Public */,
-      12,    0,  115,    2, 0x0a /* Public */,
-      13,    0,  116,    2, 0x0a /* Public */,
-      14,    0,  117,    2, 0x0a /* Public */,
-      15,    0,  118,    2, 0x0a /* Public */,
-      16,    0,  119,    2, 0x0a /* Public */,
-      17,    0,  120,    2, 0x0a /* Public */,
-      18,    0,  121,    2, 0x0a /* Public */,
-      19,    0,  122,    2, 0x0a /* Public */,
-      20,    1,  123,    2, 0x0a /* Public */,
+       9,    0,  117,    2, 0x0a /* Public */,
+      10,    0,  118,    2, 0x0a /* Public */,
+      11,    0,  119,    2, 0x0a /* Public */,
+      12,    1,  120,    2, 0x0a /* Public */,
+      13,    0,  123,    2, 0x0a /* Public */,
+      14,    0,  124,    2, 0x0a /* Public */,
+      15,    0,  125,    2, 0x0a /* Public */,
+      16,    0,  126,    2, 0x0a /* Public */,
+      17,    0,  127,    2, 0x0a /* Public */,
+      18,    0,  128,    2, 0x0a /* Public */,
+      19,    0,  129,    2, 0x0a /* Public */,
+      20,    0,  130,    2, 0x0a /* Public */,
+      21,    1,  131,    2, 0x0a /* Public */,
 
  // signals: parameters
     QMetaType::Void, 0x80000000 | 3,    2,
     QMetaType::Void, 0x80000000 | 5,    2,
     QMetaType::Void, QMetaType::Bool,    2,
     QMetaType::Void,
+    QMetaType::Void, QMetaType::QString,    2,
 
  // slots: parameters
     QMetaType::Void,
@@ -117,7 +121,7 @@ static const uint qt_meta_data_GameWidget[] = {
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
-    QMetaType::Void, 0x80000000 | 21,   22,
+    QMetaType::Void, 0x80000000 | 22,   23,
 
        0        // eod
 };
@@ -131,19 +135,20 @@ void GameWidget::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         case 1: _t->mouseClicked((*reinterpret_cast< Position(*)>(_a[1]))); break;
         case 2: _t->needNewGame((*reinterpret_cast< bool(*)>(_a[1]))); break;
         case 3: _t->signalNoGame(); break;
-        case 4: _t->emitNoGameSignal(); break;
-        case 5: _t->raizeEndGame(); break;
-        case 6: _t->clear(); break;
-        case 7: _t->endGame((*reinterpret_cast< GameState(*)>(_a[1]))); break;
-        case 8: _t->setPlayerVsPlayer(); break;
-        case 9: _t->setPlayerVsCPU(); break;
-        case 10: _t->setPlayerVsNet(); break;
-        case 11: _t->setIpAndPort(); break;
-        case 12: _t->createPlayerVsNetGame(); break;
-        case 13: _t->showNeedNewGameWindow(); break;
-        case 14: _t->needNewGameYes(); break;
-        case 15: _t->needNewGameNo(); break;
-        case 16: _t->slotNewTurn((*reinterpret_cast< Turn(*)>(_a[1]))); break;
+        case 4: _t->signalSendMessage((*reinterpret_cast< const QString(*)>(_a[1]))); break;
+        case 5: _t->emitNoGameSignal(); break;
+        case 6: _t->raizeEndGame(); break;
+        case 7: _t->clear(); break;
+        case 8: _t->endGame((*reinterpret_cast< GameState(*)>(_a[1]))); break;
+        case 9: _t->setPlayerVsPlayer(); break;
+        case 10: _t->setPlayerVsCPU(); break;
+        case 11: _t->setPlayerVsNet(); break;
+        case 12: _t->setIpAndPort(); break;
+        case 13: _t->createPlayerVsNetGame(); break;
+        case 14: _t->showNeedNewGameWindow(); break;
+        case 15: _t->needNewGameYes(); break;
+        case 16: _t->needNewGameNo(); break;
+        case 17: _t->slotNewTurn((*reinterpret_cast< Turn(*)>(_a[1]))); break;
         default: ;
         }
     } else if (_c == QMetaObject::IndexOfMethod) {
@@ -171,6 +176,12 @@ void GameWidget::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
             typedef void (GameWidget::*_t)();
             if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&GameWidget::signalNoGame)) {
                 *result = 3;
+            }
+        }
+        {
+            typedef void (GameWidget::*_t)(const QString & );
+            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&GameWidget::signalSendMessage)) {
+                *result = 4;
             }
         }
     }
@@ -201,13 +212,13 @@ int GameWidget::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 17)
+        if (_id < 18)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 17;
+        _id -= 18;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 17)
+        if (_id < 18)
             *reinterpret_cast<int*>(_a[0]) = -1;
-        _id -= 17;
+        _id -= 18;
     }
     return _id;
 }
@@ -237,5 +248,12 @@ void GameWidget::needNewGame(bool _t1)
 void GameWidget::signalNoGame()
 {
     QMetaObject::activate(this, &staticMetaObject, 3, 0);
+}
+
+// SIGNAL 4
+void GameWidget::signalSendMessage(const QString & _t1)
+{
+    void *_a[] = { 0, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
+    QMetaObject::activate(this, &staticMetaObject, 4, _a);
 }
 QT_END_MOC_NAMESPACE

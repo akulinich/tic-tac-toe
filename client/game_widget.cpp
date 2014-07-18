@@ -5,6 +5,8 @@
 #include "game_kernel.h"
 #include "game_base.h"
 #include "structurs.h"
+#include "main_window.h"
+
 
 #include <Qt>
 #include <QtWidgets>
@@ -12,7 +14,7 @@
 #include <QtDebug>
 
 
-
+class MainWindow;
 
 const int TIC_TOE_SMALL_COEF = 4;
 
@@ -109,7 +111,19 @@ void GameWidget::clear() {
 
 void GameWidget::endGame(GameState result) {
     qDebug() << "GameWidget::endGame" << sender();
+    
+    if (result == PLAYER_ONE_WIN) {
+        emit signalSendMessage("player one win");
+    }
+    if (result == PLAYER_TWO_WIN) {
+        emit signalSendMessage("player two win");
+    }
+    if (result == DRAW) {
+        emit signalSendMessage("draw");
+    }
+
     showNeedNewGameWindow();
+
     emit signalEndGame(result);
 }
 
@@ -118,6 +132,7 @@ void GameWidget::raizeEndGame() {
 }
 
 void GameWidget::setPlayerVsPlayer() {
+    emit signalSendMessage("player vs player game started");
     delete game;
     game = new UserGame();
     connect(this, SIGNAL(mouseClicked(Position)), game, SLOT(slotGetUserTurn(Position)));
@@ -126,6 +141,7 @@ void GameWidget::setPlayerVsPlayer() {
 }
 
 void GameWidget::setPlayerVsCPU() {
+    emit signalSendMessage("player vs cpu game started");
     delete game;
     game = new CPUGame(this, field_size);
     connect(this, SIGNAL(mouseClicked(Position)), game, SLOT(slotGetUserTurn(Position)));
@@ -155,6 +171,7 @@ void GameWidget::createPlayerVsNetGame() {
 
 
 void GameWidget::setPlayerVsNet() {
+    emit signalSendMessage("player vs net game started");
     input_ip_and_port = new QWidget;
     QLabel* ip_label = new QLabel("ip");
     QLabel* port_label = new QLabel("port");
@@ -212,12 +229,23 @@ void GameWidget::showNeedNewGameWindow() {
 void GameWidget::needNewGameYes() {
     delete need_new_game_widget;
     game->slotGetNewGameDecision(true);
+
+    if (type == PlVsNet) {
+        emit signalSendMessage("player vs net game started");
+    }
+    if (type == PlVsCPU) {
+        emit signalSendMessage("player vs cpu game started");
+    }
+    if (type == PlVsPl) {
+        emit signalSendMessage("player vs player game started");
+    }
 }
 
 void GameWidget::needNewGameNo() {
     delete need_new_game_widget;
     game->slotGetNewGameDecision(false);
     emit signalNoGame();
+    emit signalSendMessage("no game");
 }
 
 void GameWidget::emitNoGameSignal() {

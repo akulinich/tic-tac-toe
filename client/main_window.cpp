@@ -29,10 +29,12 @@ MainWindow::MainWindow() {
     stat = new GameStatWidget;
     
     // signal-slot conection
-    connect(game_field, SIGNAL(signalEndGame(GameState)), 
-                     stat, SLOT(increase_counter(GameState)));
-    connect(game_field, SIGNAL(signalNoGame()), this, SLOT(setAllGameTypeCheckedFalse()));
-
+    connect(game_field, SIGNAL(signalNoGame()), 
+        this, SLOT(setAllGameTypeCheckedFalse()));
+    connect(game_field, SIGNAL(signalEndGame(GameState)),
+        this, SLOT(endGame(GameState)));
+    connect(game_field, SIGNAL(signalSendMessage(const QString&)), 
+        this, SLOT(setGameStateLine(const QString&)));
 
     // layout setup
 
@@ -40,6 +42,8 @@ MainWindow::MainWindow() {
 
     main_layout->addWidget(stat);
     main_layout->addWidget(game_field);
+    game_state_line = new QLabel("");
+    main_layout->addWidget(game_state_line);
 
     main_widget->setLayout(main_layout); 
 
@@ -47,6 +51,15 @@ MainWindow::MainWindow() {
     create_menus();
 
     setWindowTitle(tr("Tic-Tac-Toe"));
+    setGameStateLine("player vs cpu game stareted");
+}
+
+void MainWindow::slotEndGame(GameState result) {
+    stat->increase_counter(result);
+}
+
+void MainWindow::setGameStateLine(const QString& str) {
+    game_state_line->setText(str);
 }
 
 void MainWindow::setAllGameTypeCheckedFalse() {

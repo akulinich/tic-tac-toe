@@ -72,7 +72,7 @@ void GameWidget::mouseReleaseEvent(QMouseEvent* pe) {
     center.rx() = (center.x() / cell_size) * cell_size + cell_size / 2;
     center.ry() = (center.y() / cell_size) * cell_size + cell_size / 2;
 
-    emit mouseClicked(Position(int(center.x()) / cell_size, 
+    emit signalMouseClicked(Position(int(center.x()) / cell_size, 
                                int(center.y()) / cell_size));
     qDebug() << "mouse event end";
 }
@@ -135,7 +135,7 @@ void GameWidget::setPlayerVsPlayer() {
     emit signalSendMessage("player vs player game started");
     delete game;
     game = new UserGame();
-    connect(this, SIGNAL(mouseClicked(Position)), game, SLOT(slotGetUserTurn(Position)));
+    connect(this, SIGNAL(signalMouseClicked(Position)), game, SLOT(slotGetUserTurn(Position)));
     type = PlVsPl;
     clear();
 }
@@ -144,7 +144,7 @@ void GameWidget::setPlayerVsCPU() {
     emit signalSendMessage("player vs cpu game started");
     delete game;
     game = new CPUGame(this, field_size);
-    connect(this, SIGNAL(mouseClicked(Position)), game, SLOT(slotGetUserTurn(Position)));
+    connect(this, SIGNAL(signalMouseClicked(Position)), game, SLOT(slotGetUserTurn(Position)));
     type = PlVsCPU;
     clear();
 }
@@ -162,7 +162,7 @@ void GameWidget::createPlayerVsNetGame() {
     delete game;
 
     game = new NetGame(this, field_size, ip, port);
-    connect(this, SIGNAL(mouseClicked(Position)), game, SLOT(slotGetUserTurn(Position)));
+    connect(this, SIGNAL(signalMouseClicked(Position)), game, SLOT(slotGetUserTurn(Position)));
 
     type = PlVsNet;
 

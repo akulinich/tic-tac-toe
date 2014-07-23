@@ -10,8 +10,8 @@ enum Cell {
 
 enum GameState {
     NOT_STARTED,
-    PLAYER_ONE_TURN,
-    PLAYER_TWO_TURN,
+    PLAYER_ONE_TURN, // tick
+    PLAYER_TWO_TURN, // toe
     PLAYER_ONE_WIN,
     PLAYER_TWO_WIN,
     DRAW

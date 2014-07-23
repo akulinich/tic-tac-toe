@@ -38,7 +38,7 @@ private:
     QAction* reset_stat_act;
     QAction* author; 
     QAction* new_game;
-    QActionGroup* game_type; // ( net ) or ( pl vs pl ) or ( pl vs cpu )
+    QActionGroup* game_type;
     QAction* set_pl_vs_pl; 
     QAction* set_pl_vs_cpu;
     QAction* set_net;

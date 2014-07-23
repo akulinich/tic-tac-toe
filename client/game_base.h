@@ -164,7 +164,9 @@ private:
     QTcpSocket* socket;
     ClientState state;
     Player local_player;
+    Player net_player;
     Side local_player_side;
+    Side net_player_side;
 
     GameWidget* game_widget;
 

@@ -94,7 +94,8 @@ bool GameKernel::winPosition(const Position& position) const {
         if (position.x_cor - LENGHT_LINE_TO_WIN + 1 >= 0 &&
             position.y_cor - LENGHT_LINE_TO_WIN + 1 >= 0) {
             if (field[Position(position.x_cor - line, position.y_cor - line)] !=
-                field[Position(position.x_cor - line + 1, position.y_cor - line + 1)]) {
+                field[Position(position.x_cor - line + 1, 
+                    position.y_cor - line + 1)]) {
                 diaganal_result = false;
             }
         } else {
@@ -113,7 +114,8 @@ bool GameKernel::winPosition(const Position& position) const {
         if (position.x_cor + LENGHT_LINE_TO_WIN + 1 < field.size() &&
             position.y_cor - LENGHT_LINE_TO_WIN + 1 >= 0) {
             if (field[Position(position.x_cor + line, position.y_cor - line)] !=
-                field[Position(position.x_cor + line - 1, position.y_cor - line + 1)]) {
+                field[Position(position.x_cor + line - 1, 
+                    position.y_cor - line + 1)]) {
                 second_diaganal_result = false;
             }
         } else {
@@ -133,10 +135,12 @@ bool GameKernel::gameOver() {
             }
             if (winPosition(Position(x, y))) {
                 if (field[Position(x, y)] == TICK) {
-                    game_state = player_one_side_ == TICK_SIDE ? PLAYER_ONE_WIN : PLAYER_TWO_WIN;
+                    game_state = player_one_side_ == TICK_SIDE ? 
+                        PLAYER_ONE_WIN : PLAYER_TWO_WIN;
                 }
                 if (field[Position(x, y)] == TOE) {
-                    game_state = player_one_side_ == TOE_SIDE ? PLAYER_ONE_WIN : PLAYER_TWO_WIN;
+                    game_state = player_one_side_ == TOE_SIDE ? 
+                        PLAYER_ONE_WIN : PLAYER_TWO_WIN;
                 }
                 break;
             }  

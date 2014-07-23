@@ -285,8 +285,6 @@ void Server::sendPlayerDisconnected(QTcpSocket* socket) {
     socket->write(data);
 }
 
-
-
 #endif
 
 

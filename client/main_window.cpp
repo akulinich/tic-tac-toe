@@ -8,31 +8,22 @@
 #include "game_stat_widget.h"
 #include "structurs.h"
 
+const int FIELD_SIZE = 10;
+const int CELL_SIZE = 30;
+
 MainWindow::MainWindow() {
     QWidget* main_widget = new QWidget;
     setCentralWidget(main_widget);
-
-    // size computition
-    int screen_height = QApplication::desktop()->height();
-    int screen_width = QApplication::desktop()->width();
-
-    int field_size = 10;
-    int width_cell_size = (screen_width - 25) / field_size;
-    int height_cell_size = (screen_height - 200) / field_size;
-    int cell_size = height_cell_size < width_cell_size ? 
-                    height_cell_size : width_cell_size;
-   
-    cell_size = 30;
-
+    
     // main widgets
-    game_field = new GameWidget(field_size, cell_size);
+    game_field = new GameWidget(FIELD_SIZE, CELL_SIZE);
     stat = new GameStatWidget;
     
     // signal-slot conection
     connect(game_field, SIGNAL(signalNoGame()), 
         this, SLOT(setAllGameTypeCheckedFalse()));
     connect(game_field, SIGNAL(signalEndGame(GameState)),
-        this, SLOT(endGame(GameState)));
+        this, SLOT(slotEndGame(GameState)));
     connect(game_field, SIGNAL(signalSendMessage(const QString&)), 
         this, SLOT(setGameStateLine(const QString&)));
 
@@ -86,7 +77,7 @@ void MainWindow::create_actios() {
     connect(reset_stat_act, SIGNAL(triggered()), stat, SLOT(reset_counters()));
 
     new_game = new QAction("New game", this);
-    connect(new_game, SIGNAL(triggered()), game_field, SLOT(newGame()));
+    
 
     author = new QAction("Author", this); 
     // добавить информацию о авторе
@@ -96,14 +87,12 @@ void MainWindow::create_actios() {
     set_pl_vs_pl = new QAction("Player vs Player", this);
     connect(set_pl_vs_pl, SIGNAL(triggered()), game_field, SLOT(setPlayerVsPlayer()));
     connect(set_pl_vs_pl, SIGNAL(triggered()), stat, SLOT(reset_counters()));
-    connect(set_pl_vs_pl, SIGNAL(triggered()), game_field, SLOT(newGame()));
     set_pl_vs_pl->setCheckable(true); 
     // set_pl_vs_pl->setChecked(true);
 
     set_pl_vs_cpu = new QAction("Player vs CPU", this);
     connect(set_pl_vs_cpu, SIGNAL(triggered()), game_field, SLOT(setPlayerVsCPU()));
     connect(set_pl_vs_cpu, SIGNAL(triggered()), stat, SLOT(reset_counters()));
-    connect(set_pl_vs_cpu, SIGNAL(triggered()), game_field, SLOT(newGame()));
     set_pl_vs_cpu->setCheckable(true);
     set_pl_vs_cpu->setChecked(true);
     // set_pl_vs_cpu->setEnabled(false);

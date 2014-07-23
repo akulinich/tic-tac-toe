@@ -20,7 +20,7 @@
 QT_BEGIN_MOC_NAMESPACE
 struct qt_meta_stringdata_GameWidget_t {
     QByteArrayData data[24];
-    char stringdata[301];
+    char stringdata[313];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -33,36 +33,36 @@ QT_MOC_LITERAL(0, 0, 10),
 QT_MOC_LITERAL(1, 11, 13),
 QT_MOC_LITERAL(2, 25, 0),
 QT_MOC_LITERAL(3, 26, 9),
-QT_MOC_LITERAL(4, 36, 12),
-QT_MOC_LITERAL(5, 49, 8),
-QT_MOC_LITERAL(6, 58, 11),
-QT_MOC_LITERAL(7, 70, 12),
-QT_MOC_LITERAL(8, 83, 17),
-QT_MOC_LITERAL(9, 101, 16),
-QT_MOC_LITERAL(10, 118, 12),
-QT_MOC_LITERAL(11, 131, 5),
-QT_MOC_LITERAL(12, 137, 7),
-QT_MOC_LITERAL(13, 145, 17),
-QT_MOC_LITERAL(14, 163, 14),
-QT_MOC_LITERAL(15, 178, 14),
-QT_MOC_LITERAL(16, 193, 12),
-QT_MOC_LITERAL(17, 206, 21),
-QT_MOC_LITERAL(18, 228, 21),
-QT_MOC_LITERAL(19, 250, 14),
-QT_MOC_LITERAL(20, 265, 13),
-QT_MOC_LITERAL(21, 279, 11),
-QT_MOC_LITERAL(22, 291, 4),
-QT_MOC_LITERAL(23, 296, 4)
+QT_MOC_LITERAL(4, 36, 18),
+QT_MOC_LITERAL(5, 55, 8),
+QT_MOC_LITERAL(6, 64, 17),
+QT_MOC_LITERAL(7, 82, 12),
+QT_MOC_LITERAL(8, 95, 17),
+QT_MOC_LITERAL(9, 113, 16),
+QT_MOC_LITERAL(10, 130, 12),
+QT_MOC_LITERAL(11, 143, 5),
+QT_MOC_LITERAL(12, 149, 7),
+QT_MOC_LITERAL(13, 157, 17),
+QT_MOC_LITERAL(14, 175, 14),
+QT_MOC_LITERAL(15, 190, 14),
+QT_MOC_LITERAL(16, 205, 12),
+QT_MOC_LITERAL(17, 218, 21),
+QT_MOC_LITERAL(18, 240, 21),
+QT_MOC_LITERAL(19, 262, 14),
+QT_MOC_LITERAL(20, 277, 13),
+QT_MOC_LITERAL(21, 291, 11),
+QT_MOC_LITERAL(22, 303, 4),
+QT_MOC_LITERAL(23, 308, 4)
     },
     "GameWidget\0signalEndGame\0\0GameState\0"
-    "mouseClicked\0Position\0needNewGame\0"
-    "signalNoGame\0signalSendMessage\0"
-    "emitNoGameSignal\0raizeEndGame\0clear\0"
-    "endGame\0setPlayerVsPlayer\0setPlayerVsCPU\0"
-    "setPlayerVsNet\0setIpAndPort\0"
-    "createPlayerVsNetGame\0showNeedNewGameWindow\0"
-    "needNewGameYes\0needNewGameNo\0slotNewTurn\0"
-    "Turn\0turn"
+    "signalMouseClicked\0Position\0"
+    "signalNeedNewGame\0signalNoGame\0"
+    "signalSendMessage\0emitNoGameSignal\0"
+    "raizeEndGame\0clear\0endGame\0setPlayerVsPlayer\0"
+    "setPlayerVsCPU\0setPlayerVsNet\0"
+    "setIpAndPort\0createPlayerVsNetGame\0"
+    "showNeedNewGameWindow\0needNewGameYes\0"
+    "needNewGameNo\0slotNewTurn\0Turn\0turn"
 };
 #undef QT_MOC_LITERAL
 
@@ -132,8 +132,8 @@ void GameWidget::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         GameWidget *_t = static_cast<GameWidget *>(_o);
         switch (_id) {
         case 0: _t->signalEndGame((*reinterpret_cast< GameState(*)>(_a[1]))); break;
-        case 1: _t->mouseClicked((*reinterpret_cast< Position(*)>(_a[1]))); break;
-        case 2: _t->needNewGame((*reinterpret_cast< bool(*)>(_a[1]))); break;
+        case 1: _t->signalMouseClicked((*reinterpret_cast< Position(*)>(_a[1]))); break;
+        case 2: _t->signalNeedNewGame((*reinterpret_cast< bool(*)>(_a[1]))); break;
         case 3: _t->signalNoGame(); break;
         case 4: _t->signalSendMessage((*reinterpret_cast< const QString(*)>(_a[1]))); break;
         case 5: _t->emitNoGameSignal(); break;
@@ -162,13 +162,13 @@ void GameWidget::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         }
         {
             typedef void (GameWidget::*_t)(Position );
-            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&GameWidget::mouseClicked)) {
+            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&GameWidget::signalMouseClicked)) {
                 *result = 1;
             }
         }
         {
             typedef void (GameWidget::*_t)(bool );
-            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&GameWidget::needNewGame)) {
+            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&GameWidget::signalNeedNewGame)) {
                 *result = 2;
             }
         }
@@ -231,14 +231,14 @@ void GameWidget::signalEndGame(GameState _t1)
 }
 
 // SIGNAL 1
-void GameWidget::mouseClicked(Position _t1)
+void GameWidget::signalMouseClicked(Position _t1)
 {
     void *_a[] = { 0, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
     QMetaObject::activate(this, &staticMetaObject, 1, _a);
 }
 
 // SIGNAL 2
-void GameWidget::needNewGame(bool _t1)
+void GameWidget::signalNeedNewGame(bool _t1)
 {
     void *_a[] = { 0, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
     QMetaObject::activate(this, &staticMetaObject, 2, _a);

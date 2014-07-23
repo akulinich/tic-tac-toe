@@ -49,8 +49,8 @@ public:
 
 signals:
     void signalEndGame(GameState);
-    void mouseClicked(Position);
-    void needNewGame(bool);
+    void signalMouseClicked(Position);
+    void signalNeedNewGame(bool);
     void signalNoGame();
     void signalSendMessage(const QString&);
 

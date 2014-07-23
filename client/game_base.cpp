@@ -41,8 +41,8 @@ NetGame::NetGame(GameWidget* widget, int size, const QString& ip, int port)
     socket = new QTcpSocket(this);
     socket->connectToHost(ip, port);
 
-    connect(socket, SIGNAL(connected()), this, SLOT(slotConnected())); // do when connect to server
-    connect(socket, SIGNAL(readyRead()), this, SLOT(slotReadInfo())); // do when information arrived
+    connect(socket, SIGNAL(connected()), this, SLOT(slotConnected())); 
+    connect(socket, SIGNAL(readyRead()), this, SLOT(slotReadInfo())); 
     connect(socket, SIGNAL(error(QAbstractSocket::SocketError)), 
             this, SLOT(slotError(QAbstractSocket::SocketError)));
 
@@ -54,7 +54,8 @@ NetGame::NetGame(GameWidget* widget, int size, const QString& ip, int port)
 
 
 void NetGame::slotError(QAbstractSocket::SocketError) {
-    QMessageBox::critical(game_widget, tr("Server Erorr "), tr("Unable to connect to server"));
+    QMessageBox::critical(game_widget, tr("Server Erorr "), 
+        tr("Unable to connect to server"));
 } 
 
 
@@ -71,7 +72,7 @@ void NetGame::slotGetNetPlayerTurn(Turn decision) {
     }
 
     if (game.possiblyDecision(decision.pos)) {
-        game.playerDecision(decision.pos, decision.player);
+        game.playerDecision(decision.pos, net_player);
         game_widget->slotNewTurn(decision);
         state = WAIT_USER_DECISION;
         if (game.state() == PLAYER_ONE_WIN || game.state() == PLAYER_TWO_WIN 
@@ -156,11 +157,15 @@ void NetGame::readPlayerNumber() {
         if (number == 1) {
             state = WAIT_USER_DECISION;
             local_player = PLAYER_ONE;
+            net_player = PLAYER_TWO;
             local_player_side = TICK_SIDE;
+            net_player_side = TOE_SIDE;
         } else {
             state = WAIT_NET_USER_DECISION;
             local_player = PLAYER_TWO;
+            net_player = PLAYER_ONE;
             local_player_side = TOE_SIDE;
+            net_player_side = TICK_SIDE;
         }
 
         game.start(TICK_SIDE, TOE_SIDE);
@@ -290,11 +295,24 @@ void NetGame::slotNewGame(bool) {
     game_widget->clear();
     game.resetGame();
     local_player_side = local_player_side == TICK_SIDE ? TOE_SIDE : TICK_SIDE;
-    game.start(TICK_SIDE, TOE_SIDE);
+    
+
+
+    
 
     if (local_player_side == TICK_SIDE) {
+        if (local_player == PLAYER_ONE) {
+            game.start(TICK_SIDE, TOE_SIDE);
+        } else {
+            game.start(TOE_SIDE, TICK_SIDE);
+        }
         state = WAIT_USER_DECISION;
     } else {
+        if (local_player == PLAYER_ONE) {
+            game.start(TOE_SIDE, TICK_SIDE);
+        } else {
+            game.start(TICK_SIDE, TOE_SIDE);
+        }
         state = WAIT_NET_USER_DECISION;
     }
 }
@@ -306,7 +324,8 @@ void NetGame::slotNewGame(bool) {
 
 
 
-CPUGame::CPUGame(GameWidget* widget, int size) : GameBase(size), game_widget(widget) {
+CPUGame::CPUGame(GameWidget* widget, int size) : GameBase(size), 
+                                                game_widget(widget) {
     user_player = PLAYER_ONE;
     cpu_player = PLAYER_TWO;
     user_player_side = TICK_SIDE;

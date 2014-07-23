@@ -21,11 +21,11 @@ MainWindow::MainWindow() {
     
     // signal-slot conection
     connect(game_field, SIGNAL(signalNoGame()), 
-        this, SLOT(setAllGameTypeCheckedFalse()));
+        this, SLOT(slotSetAllGameTypeCheckedFalse()));
     connect(game_field, SIGNAL(signalEndGame(GameState)),
         this, SLOT(slotEndGame(GameState)));
     connect(game_field, SIGNAL(signalSendMessage(const QString&)), 
-        this, SLOT(setGameStateLine(const QString&)));
+        this, SLOT(slotSetGameStateLine(const QString&)));
 
     // layout setup
 
@@ -42,18 +42,18 @@ MainWindow::MainWindow() {
     create_menus();
 
     setWindowTitle(tr("Tic-Tac-Toe"));
-    setGameStateLine("player vs cpu game stareted");
+    slotSetGameStateLine("player vs cpu game stareted");
 }
 
 void MainWindow::slotEndGame(GameState result) {
     stat->increase_counter(result);
 }
 
-void MainWindow::setGameStateLine(const QString& str) {
+void MainWindow::slotSetGameStateLine(const QString& str) {
     game_state_line->setText(str);
 }
 
-void MainWindow::setAllGameTypeCheckedFalse() {
+void MainWindow::slotSetAllGameTypeCheckedFalse() {
     set_pl_vs_cpu->setChecked(false);
     set_pl_vs_pl->setChecked(false);
     set_net->setChecked(false);
@@ -85,20 +85,20 @@ void MainWindow::create_actios() {
     game_type = new QActionGroup(this); 
 
     set_pl_vs_pl = new QAction("Player vs Player", this);
-    connect(set_pl_vs_pl, SIGNAL(triggered()), game_field, SLOT(setPlayerVsPlayer()));
+    connect(set_pl_vs_pl, SIGNAL(triggered()), game_field, SLOT(slotSetPlayerVsPlayer()));
     connect(set_pl_vs_pl, SIGNAL(triggered()), stat, SLOT(reset_counters()));
     set_pl_vs_pl->setCheckable(true); 
     // set_pl_vs_pl->setChecked(true);
 
     set_pl_vs_cpu = new QAction("Player vs CPU", this);
-    connect(set_pl_vs_cpu, SIGNAL(triggered()), game_field, SLOT(setPlayerVsCPU()));
+    connect(set_pl_vs_cpu, SIGNAL(triggered()), game_field, SLOT(slotSetPlayerVsCPU()));
     connect(set_pl_vs_cpu, SIGNAL(triggered()), stat, SLOT(reset_counters()));
     set_pl_vs_cpu->setCheckable(true);
     set_pl_vs_cpu->setChecked(true);
     // set_pl_vs_cpu->setEnabled(false);
 
     set_net = new QAction("Net game", this);
-    connect(set_net, SIGNAL(triggered()), game_field, SLOT(setPlayerVsNet()));
+    connect(set_net, SIGNAL(triggered()), game_field, SLOT(slotSetPlayerVsNet()));
     connect(set_net, SIGNAL(triggered()), stat, SLOT(reset_counters()));
     set_net->setCheckable(true);
     // set_net->setEnabled(false);

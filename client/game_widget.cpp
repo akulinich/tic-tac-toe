@@ -26,7 +26,7 @@ GameWidget::GameWidget(int size_of_field, int cell_size, QWidget* widget)
 
     qDebug() << "game widget constructor";
 
-    setPlayerVsCPU();
+    slotSetPlayerVsCPU();
 
     resize(size_of_field * cell_size + 1, size_of_field * cell_size + 1);
     setMinimumSize(size());
@@ -37,7 +37,7 @@ GameWidget::GameWidget(int size_of_field, int cell_size, QWidget* widget)
 }
 
 
-void GameWidget::slotNewTurn(Turn turn) {
+void GameWidget::newTurn(Turn turn) {
     QPoint center(turn.pos.x_cor * cell_size, turn.pos.y_cor * cell_size);
 
     center.rx() = (center.x() / cell_size) * cell_size + cell_size / 2;
@@ -131,38 +131,41 @@ void GameWidget::raizeEndGame() {
     emit endGame(game->getGameState());
 }
 
-void GameWidget::setPlayerVsPlayer() {
+void GameWidget::slotSetPlayerVsPlayer() {
     emit signalSendMessage("player vs player game started");
     delete game;
     game = new UserGame();
-    connect(this, SIGNAL(signalMouseClicked(Position)), game, SLOT(slotGetUserTurn(Position)));
+    connect(this, SIGNAL(signalMouseClicked(Position)), 
+        game, SLOT(slotGetUserTurn(Position)));
     type = PlVsPl;
     clear();
 }
 
-void GameWidget::setPlayerVsCPU() {
+void GameWidget::slotSetPlayerVsCPU() {
     emit signalSendMessage("player vs cpu game started");
     delete game;
     game = new CPUGame(this, field_size);
-    connect(this, SIGNAL(signalMouseClicked(Position)), game, SLOT(slotGetUserTurn(Position)));
+    connect(this, SIGNAL(signalMouseClicked(Position)), 
+        game, SLOT(slotGetUserTurn(Position)));
     type = PlVsCPU;
     clear();
 }
 
-void GameWidget::setIpAndPort() {
+void GameWidget::slotSetIpAndPort() {
     ip = ip_line->text();
     port = port_line->text().toInt();
     input_ip_and_port->close();
     delete input_ip_and_port;
 }
 
-void GameWidget::createPlayerVsNetGame() {
+void GameWidget::slotCreatePlayerVsNetGame() {
     qDebug() << "createPlayerVsNetGame";
 
     delete game;
 
     game = new NetGame(this, field_size, ip, port);
-    connect(this, SIGNAL(signalMouseClicked(Position)), game, SLOT(slotGetUserTurn(Position)));
+    connect(this, SIGNAL(signalMouseClicked(Position)), 
+        game, SLOT(slotGetUserTurn(Position)));
 
     type = PlVsNet;
 
@@ -170,7 +173,7 @@ void GameWidget::createPlayerVsNetGame() {
 }
 
 
-void GameWidget::setPlayerVsNet() {
+void GameWidget::slotSetPlayerVsNet() {
     emit signalSendMessage("player vs net game started");
     input_ip_and_port = new QWidget;
     QLabel* ip_label = new QLabel("ip");
@@ -184,8 +187,9 @@ void GameWidget::setPlayerVsNet() {
     QHBoxLayout* ip_layout = new QHBoxLayout;
     QHBoxLayout* port_layout = new QHBoxLayout;
 
-    connect(button, SIGNAL(clicked()), this, SLOT(setIpAndPort()));
-    connect(input_ip_and_port, SIGNAL(destroyed()), this, SLOT(createPlayerVsNetGame()));
+    connect(button, SIGNAL(clicked()), this, SLOT(slotSetIpAndPort()));
+    connect(input_ip_and_port, SIGNAL(destroyed()), 
+        this, SLOT(slotCreatePlayerVsNetGame()));
 
     ip_layout->addWidget(ip_label);
     ip_layout->addWidget(ip_line);
@@ -222,11 +226,11 @@ void GameWidget::showNeedNewGameWindow() {
     need_new_game_widget->setLayout(main_layout);
     need_new_game_widget->show();
 
-    connect(need_button, SIGNAL(clicked()), this, SLOT(needNewGameYes()));
-    connect(not_need_button, SIGNAL(clicked()), this, SLOT(needNewGameNo()));
+    connect(need_button, SIGNAL(clicked()), this, SLOT(slotNeedNewGameYes()));
+    connect(not_need_button, SIGNAL(clicked()), this, SLOT(slotNeedNewGameNo()));
 }
 
-void GameWidget::needNewGameYes() {
+void GameWidget::slotNeedNewGameYes() {
     delete need_new_game_widget;
     game->slotGetNewGameDecision(true);
 
@@ -241,7 +245,7 @@ void GameWidget::needNewGameYes() {
     }
 }
 
-void GameWidget::needNewGameNo() {
+void GameWidget::slotNeedNewGameNo() {
     delete need_new_game_widget;
     game->slotGetNewGameDecision(false);
     emit signalNoGame();

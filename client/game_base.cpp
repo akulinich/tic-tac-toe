@@ -8,8 +8,6 @@
 
 #include <algorithm>
 
-const int WAIT_SIDE_INFO_CONSTANT = 10;
-
 
 QDataStream& operator<<(QDataStream& stream, UserInfo& info) {
     stream << info.type_of_package;
@@ -73,7 +71,7 @@ void NetGame::slotGetNetPlayerTurn(Turn decision) {
 
     if (game.possiblyDecision(decision.pos)) {
         game.playerDecision(decision.pos, net_player);
-        game_widget->slotNewTurn(decision);
+        game_widget->newTurn(decision);
         state = WAIT_USER_DECISION;
         if (game.state() == PLAYER_ONE_WIN || game.state() == PLAYER_TWO_WIN 
                 || game.state() == DRAW) {
@@ -91,7 +89,7 @@ void NetGame::slotGetUserTurn(Position pos) {
     }
     if (game.possiblyDecision(pos)) {
         game.playerDecision(pos, local_player);
-        game_widget->slotNewTurn(Turn(pos, local_player_side, local_player));
+        game_widget->newTurn(Turn(pos, local_player_side, local_player));
         sendUserInfo(UserInfo(pos.x_cor, pos.y_cor, 
             local_player_side == TICK_SIDE ? 1 : 2,
             local_player == PLAYER_ONE ? 1 : 2));
@@ -348,7 +346,7 @@ void CPUGame::slotGetUserTurn(Position pos) {
             return;
         }
         game.playerDecision(pos, user_player);
-        game_widget->slotNewTurn(Turn(pos, user_player_side, user_player));
+        game_widget->newTurn(Turn(pos, user_player_side, user_player));
         state = CPUGameStatus::CPU_TURN;
         if (game.state() == PLAYER_ONE_WIN || game.state() == PLAYER_TWO_WIN 
                 || game.state() == DRAW) {
@@ -368,7 +366,7 @@ void CPUGame::slotGetCPUTurn() {
             pos.y_cor = rand() % game.size();
         } while(!game.possiblyDecision(pos));
         game.playerDecision(pos, cpu_player);
-        game_widget->slotNewTurn(Turn(pos, cpu_player_side, cpu_player));
+        game_widget->newTurn(Turn(pos, cpu_player_side, cpu_player));
         state = USER_TURN;
         if (game.state() == PLAYER_ONE_WIN || game.state() == PLAYER_TWO_WIN 
                 || game.state() == DRAW) {

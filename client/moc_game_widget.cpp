@@ -19,8 +19,8 @@
 
 QT_BEGIN_MOC_NAMESPACE
 struct qt_meta_stringdata_GameWidget_t {
-    QByteArrayData data[24];
-    char stringdata[313];
+    QByteArrayData data[16];
+    char stringdata[253];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -38,31 +38,21 @@ QT_MOC_LITERAL(5, 55, 8),
 QT_MOC_LITERAL(6, 64, 17),
 QT_MOC_LITERAL(7, 82, 12),
 QT_MOC_LITERAL(8, 95, 17),
-QT_MOC_LITERAL(9, 113, 16),
-QT_MOC_LITERAL(10, 130, 12),
-QT_MOC_LITERAL(11, 143, 5),
-QT_MOC_LITERAL(12, 149, 7),
-QT_MOC_LITERAL(13, 157, 17),
-QT_MOC_LITERAL(14, 175, 14),
-QT_MOC_LITERAL(15, 190, 14),
-QT_MOC_LITERAL(16, 205, 12),
-QT_MOC_LITERAL(17, 218, 21),
-QT_MOC_LITERAL(18, 240, 21),
-QT_MOC_LITERAL(19, 262, 14),
-QT_MOC_LITERAL(20, 277, 13),
-QT_MOC_LITERAL(21, 291, 11),
-QT_MOC_LITERAL(22, 303, 4),
-QT_MOC_LITERAL(23, 308, 4)
+QT_MOC_LITERAL(9, 113, 21),
+QT_MOC_LITERAL(10, 135, 18),
+QT_MOC_LITERAL(11, 154, 18),
+QT_MOC_LITERAL(12, 173, 16),
+QT_MOC_LITERAL(13, 190, 25),
+QT_MOC_LITERAL(14, 216, 18),
+QT_MOC_LITERAL(15, 235, 17)
     },
     "GameWidget\0signalEndGame\0\0GameState\0"
     "signalMouseClicked\0Position\0"
     "signalNeedNewGame\0signalNoGame\0"
-    "signalSendMessage\0emitNoGameSignal\0"
-    "raizeEndGame\0clear\0endGame\0setPlayerVsPlayer\0"
-    "setPlayerVsCPU\0setPlayerVsNet\0"
-    "setIpAndPort\0createPlayerVsNetGame\0"
-    "showNeedNewGameWindow\0needNewGameYes\0"
-    "needNewGameNo\0slotNewTurn\0Turn\0turn"
+    "signalSendMessage\0slotSetPlayerVsPlayer\0"
+    "slotSetPlayerVsCPU\0slotSetPlayerVsNet\0"
+    "slotSetIpAndPort\0slotCreatePlayerVsNetGame\0"
+    "slotNeedNewGameYes\0slotNeedNewGameNo"
 };
 #undef QT_MOC_LITERAL
 
@@ -72,7 +62,7 @@ static const uint qt_meta_data_GameWidget[] = {
        7,       // revision
        0,       // classname
        0,    0, // classinfo
-      18,   14, // methods
+      12,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -80,26 +70,20 @@ static const uint qt_meta_data_GameWidget[] = {
        5,       // signalCount
 
  // signals: name, argc, parameters, tag, flags
-       1,    1,  104,    2, 0x06 /* Public */,
-       4,    1,  107,    2, 0x06 /* Public */,
-       6,    1,  110,    2, 0x06 /* Public */,
-       7,    0,  113,    2, 0x06 /* Public */,
-       8,    1,  114,    2, 0x06 /* Public */,
+       1,    1,   74,    2, 0x06 /* Public */,
+       4,    1,   77,    2, 0x06 /* Public */,
+       6,    1,   80,    2, 0x06 /* Public */,
+       7,    0,   83,    2, 0x06 /* Public */,
+       8,    1,   84,    2, 0x06 /* Public */,
 
  // slots: name, argc, parameters, tag, flags
-       9,    0,  117,    2, 0x0a /* Public */,
-      10,    0,  118,    2, 0x0a /* Public */,
-      11,    0,  119,    2, 0x0a /* Public */,
-      12,    1,  120,    2, 0x0a /* Public */,
-      13,    0,  123,    2, 0x0a /* Public */,
-      14,    0,  124,    2, 0x0a /* Public */,
-      15,    0,  125,    2, 0x0a /* Public */,
-      16,    0,  126,    2, 0x0a /* Public */,
-      17,    0,  127,    2, 0x0a /* Public */,
-      18,    0,  128,    2, 0x0a /* Public */,
-      19,    0,  129,    2, 0x0a /* Public */,
-      20,    0,  130,    2, 0x0a /* Public */,
-      21,    1,  131,    2, 0x0a /* Public */,
+       9,    0,   87,    2, 0x0a /* Public */,
+      10,    0,   88,    2, 0x0a /* Public */,
+      11,    0,   89,    2, 0x0a /* Public */,
+      12,    0,   90,    2, 0x0a /* Public */,
+      13,    0,   91,    2, 0x0a /* Public */,
+      14,    0,   92,    2, 0x0a /* Public */,
+      15,    0,   93,    2, 0x0a /* Public */,
 
  // signals: parameters
     QMetaType::Void, 0x80000000 | 3,    2,
@@ -112,16 +96,10 @@ static const uint qt_meta_data_GameWidget[] = {
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
-    QMetaType::Void, 0x80000000 | 3,    2,
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
-    QMetaType::Void,
-    QMetaType::Void,
-    QMetaType::Void,
-    QMetaType::Void,
-    QMetaType::Void, 0x80000000 | 22,   23,
 
        0        // eod
 };
@@ -136,19 +114,13 @@ void GameWidget::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         case 2: _t->signalNeedNewGame((*reinterpret_cast< bool(*)>(_a[1]))); break;
         case 3: _t->signalNoGame(); break;
         case 4: _t->signalSendMessage((*reinterpret_cast< const QString(*)>(_a[1]))); break;
-        case 5: _t->emitNoGameSignal(); break;
-        case 6: _t->raizeEndGame(); break;
-        case 7: _t->clear(); break;
-        case 8: _t->endGame((*reinterpret_cast< GameState(*)>(_a[1]))); break;
-        case 9: _t->setPlayerVsPlayer(); break;
-        case 10: _t->setPlayerVsCPU(); break;
-        case 11: _t->setPlayerVsNet(); break;
-        case 12: _t->setIpAndPort(); break;
-        case 13: _t->createPlayerVsNetGame(); break;
-        case 14: _t->showNeedNewGameWindow(); break;
-        case 15: _t->needNewGameYes(); break;
-        case 16: _t->needNewGameNo(); break;
-        case 17: _t->slotNewTurn((*reinterpret_cast< Turn(*)>(_a[1]))); break;
+        case 5: _t->slotSetPlayerVsPlayer(); break;
+        case 6: _t->slotSetPlayerVsCPU(); break;
+        case 7: _t->slotSetPlayerVsNet(); break;
+        case 8: _t->slotSetIpAndPort(); break;
+        case 9: _t->slotCreatePlayerVsNetGame(); break;
+        case 10: _t->slotNeedNewGameYes(); break;
+        case 11: _t->slotNeedNewGameNo(); break;
         default: ;
         }
     } else if (_c == QMetaObject::IndexOfMethod) {
@@ -212,13 +184,13 @@ int GameWidget::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 18)
+        if (_id < 12)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 18;
+        _id -= 12;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 18)
+        if (_id < 12)
             *reinterpret_cast<int*>(_a[0]) = -1;
-        _id -= 18;
+        _id -= 12;
     }
     return _id;
 }

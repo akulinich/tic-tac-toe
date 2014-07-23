@@ -20,7 +20,7 @@
 QT_BEGIN_MOC_NAMESPACE
 struct qt_meta_stringdata_MainWindow_t {
     QByteArrayData data[8];
-    char stringdata[89];
+    char stringdata[97];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -30,16 +30,16 @@ struct qt_meta_stringdata_MainWindow_t {
 static const qt_meta_stringdata_MainWindow_t qt_meta_stringdata_MainWindow = {
     {
 QT_MOC_LITERAL(0, 0, 10),
-QT_MOC_LITERAL(1, 11, 26),
-QT_MOC_LITERAL(2, 38, 0),
-QT_MOC_LITERAL(3, 39, 16),
-QT_MOC_LITERAL(4, 56, 3),
-QT_MOC_LITERAL(5, 60, 11),
-QT_MOC_LITERAL(6, 72, 9),
-QT_MOC_LITERAL(7, 82, 6)
+QT_MOC_LITERAL(1, 11, 30),
+QT_MOC_LITERAL(2, 42, 0),
+QT_MOC_LITERAL(3, 43, 20),
+QT_MOC_LITERAL(4, 64, 3),
+QT_MOC_LITERAL(5, 68, 11),
+QT_MOC_LITERAL(6, 80, 9),
+QT_MOC_LITERAL(7, 90, 6)
     },
-    "MainWindow\0setAllGameTypeCheckedFalse\0"
-    "\0setGameStateLine\0str\0slotEndGame\0"
+    "MainWindow\0slotSetAllGameTypeCheckedFalse\0"
+    "\0slotSetGameStateLine\0str\0slotEndGame\0"
     "GameState\0result"
 };
 #undef QT_MOC_LITERAL
@@ -75,8 +75,8 @@ void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
     if (_c == QMetaObject::InvokeMetaMethod) {
         MainWindow *_t = static_cast<MainWindow *>(_o);
         switch (_id) {
-        case 0: _t->setAllGameTypeCheckedFalse(); break;
-        case 1: _t->setGameStateLine((*reinterpret_cast< const QString(*)>(_a[1]))); break;
+        case 0: _t->slotSetAllGameTypeCheckedFalse(); break;
+        case 1: _t->slotSetGameStateLine((*reinterpret_cast< const QString(*)>(_a[1]))); break;
         case 2: _t->slotEndGame((*reinterpret_cast< GameState(*)>(_a[1]))); break;
         default: ;
         }

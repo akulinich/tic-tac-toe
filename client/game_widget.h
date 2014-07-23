@@ -47,6 +47,13 @@ protected:
 public:
     GameWidget(int size_of_field, int cell_size, QWidget* widget = 0);
 
+    void clear();
+    void emitNoGameSignal();
+    void raizeEndGame();
+    void endGame(GameState);
+    void showNeedNewGameWindow();
+    void newTurn(Turn turn);
+
 signals:
     void signalEndGame(GameState);
     void signalMouseClicked(Position);
@@ -55,25 +62,16 @@ signals:
     void signalSendMessage(const QString&);
 
 public slots:
-    void emitNoGameSignal();
+    
+    void slotSetPlayerVsPlayer();
+    void slotSetPlayerVsCPU();
+    void slotSetPlayerVsNet(); 
 
-    void raizeEndGame();
-    void clear();
-    void endGame(GameState);
+    void slotSetIpAndPort(); 
+    void slotCreatePlayerVsNetGame(); 
 
-    void setPlayerVsPlayer();
-    void setPlayerVsCPU();
-    void setPlayerVsNet();
-
-    void setIpAndPort();
-    void createPlayerVsNetGame();
-
-    void showNeedNewGameWindow();
-
-    void needNewGameYes();
-    void needNewGameNo();
-
-    void slotNewTurn(Turn turn);
+    void slotNeedNewGameYes();
+    void slotNeedNewGameNo();
 };
 
 #endif

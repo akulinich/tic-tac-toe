@@ -15,8 +15,8 @@ public:
     MainWindow();
 
 public slots:
-    void setAllGameTypeCheckedFalse();
-    void setGameStateLine(const QString& str);
+    void slotSetAllGameTypeCheckedFalse();
+    void slotSetGameStateLine(const QString& str);
     void slotEndGame(GameState result);
 
 private:

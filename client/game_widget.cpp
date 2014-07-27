@@ -256,4 +256,9 @@ void GameWidget::emitNoGameSignal() {
     emit signalNoGame();
 }
 
+void GameWidget::emitSendMessage(const QString& text) {
+    emit signalSendMessage(text);
+}
+
+
 #endif

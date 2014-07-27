@@ -102,29 +102,43 @@ void Server::slotLoseConnection() {
 
     for (int i = 0; i < sockets.size(); ++i) {
         if (sockets[i].socket == socket) {
+            qDebug() << "remove " << i; 
             sockets.remove(i);
             break;
         }
     }
 
-   
-    if (choosen_sockets[0].socket == socket) {
-        if (state != PLAYERS_NOT_SETED) { 
-            sendPlayerDisconnected(choosen_sockets[1].socket);
+    if (choosen_sockets.size() == 1) {
+        if (choosen_sockets[0].socket == socket) {
+            choosen_sockets.remove(0);
         }
-        state = PLAYERS_NOT_SETED;
-        choosen_sockets.remove(0);
-    }
-    if (choosen_sockets[1].socket == socket) {
-        if (state != PLAYERS_NOT_SETED) { 
-            sendPlayerDisconnected(choosen_sockets[0].socket);
+    } else 
+    if (choosen_sockets.size() == 2) {
+        if (state == PLAYERS_NOT_SETED) {
+            if (choosen_sockets[0].socket == socket) {
+                choosen_sockets.remove(0);
+                redrawLists();
+                return;
+            }
+            if (choosen_sockets[1].socket == socket) {
+                choosen_sockets.remove(1);
+            }
+        } else {
+            if (choosen_sockets[0].socket == socket) {
+                sendPlayerDisconnected(choosen_sockets[1].socket);
+                choosen_sockets.remove(0);
+                state = PLAYERS_NOT_SETED;
+                redrawLists();
+                return;
+            }
+            if (choosen_sockets[1].socket == socket) {
+                sendPlayerDisconnected(choosen_sockets[0].socket);
+                choosen_sockets.remove(1);
+                state = PLAYERS_NOT_SETED;
+            }
         }
-        state = PLAYERS_NOT_SETED;
-        choosen_sockets.remove(1);
     }
-
-
-    redrawLists();
+    redrawLists();   
 }
 
 
@@ -165,6 +179,7 @@ void Server::slotSetNewPlayers() {
 }
 
 void Server::slotResetPlayers() {
+    qDebug() << "slotResetPlayers";
     player_one.socket = NULL;
     player_two.socket = NULL;
     choosen_players->clear();
@@ -175,11 +190,9 @@ void Server::slotResetPlayers() {
 void Server::slotAddPlayerInChoosenList(QListWidgetItem* choosen_item) {
     std::cout << "add player in chosen list" << std::endl;
     if (choosen_players->count() < 2) {
-        std::cout << choosen_item << std::endl;
+        std::cout << "add : " << choosen_item << std::endl;
         choosen_sockets.push_back(sockets[all_avaliable_players->row(choosen_item)]);
         redrawLists();
-        std::cout << choosen_item << std::endl;
-        std::cout << "added" << std::endl;
     }
 }
 

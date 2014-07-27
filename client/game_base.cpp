@@ -206,19 +206,10 @@ void NetGame::readPlayerDisconnected() {
         qDebug() << "readPlayerNumber";
     QDataStream in(socket);
     in.setVersion(QDataStream::Qt_4_8);
-    while(true) {
-        if (socket->bytesAvailable() < qint64(sizeof(int))) {
-            continue;
-        }
-
-        int number;
-        in >> number;
-
-        // what do when disconnected?
-
-        break;
-    }
-
+    
+    state = NOT_CONNECTED;
+    game_widget->emitNoGameSignal();
+    game_widget->emitSendMessage("player disconnect");
 }
 
 void NetGame::readEndGame() {

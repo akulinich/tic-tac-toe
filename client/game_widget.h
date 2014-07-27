@@ -49,6 +49,7 @@ public:
 
     void clear();
     void emitNoGameSignal();
+    void emitSendMessage(const QString&);
     void raizeEndGame();
     void endGame(GameState);
     void showNeedNewGameWindow();
@@ -62,7 +63,7 @@ signals:
     void signalSendMessage(const QString&);
 
 public slots:
-    
+
     void slotSetPlayerVsPlayer();
     void slotSetPlayerVsCPU();
     void slotSetPlayerVsNet(); 

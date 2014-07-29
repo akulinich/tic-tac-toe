@@ -17,17 +17,17 @@ void PlayingField::clear() {
                    vector<Cell>(size_, EMPTY));
 }
 
-bool PlayingField::setTick(Position pos) {
+void PlayingField::setTick(Position pos) {
     field[pos.x_cor][pos.y_cor] = TICK;
 }
 
-bool PlayingField::setToe(Position pos) {
+void PlayingField::setToe(Position pos) {
     field[pos.x_cor][pos.y_cor] = TOE;
 }
-bool PlayingField::setTick(int x, int y) {
+void PlayingField::setTick(int x, int y) {
     field[x][y] = TICK;
 }
-bool PlayingField::setToe(int x, int y) {
+void PlayingField::setToe(int x, int y) {
     field[x][y] = TOE;
 }
 

@@ -42,7 +42,7 @@ public:
 
 private:
     bool winPosition(const Position& position) const;
-    bool gameOver();
+    void gameOver();
     
 
     PlayingField field;

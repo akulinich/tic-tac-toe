@@ -125,7 +125,7 @@ bool GameKernel::winPosition(const Position& position) const {
     return top_result || left_result || diaganal_result || second_diaganal_result;
 }
 
-bool GameKernel::gameOver() {
+void GameKernel::gameOver() {
     bool empty_cell_exist = false;
     for (int x = 0; x < field.size(); ++x) {
         for (int y = 0; y < field.size(); ++y) {

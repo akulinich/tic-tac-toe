@@ -38,7 +38,7 @@ QDataStream& operator>>(QDataStream& stream, UserInfo& info) {
 Server::Server(int port, QWidget* widget) : QWidget(widget) {
     qDebug() << "constructor";
     server = new QTcpServer(this);
-    if (!server->listen(QHostAddress::Any, port)) {
+    if (!server->listen(QHostAddress("10.7.8.47"), port)) {
             QMessageBox::critical(this, tr("Server Erorr"),
                               tr("Unable to start the server: %1.")
                               .arg(server->errorString()));

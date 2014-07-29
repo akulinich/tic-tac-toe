@@ -17,17 +17,17 @@ void PlayingField::clear() {
                    vector<Cell>(size_, EMPTY));
 }
 
-bool PlayingField::setTick(Position pos) {
+void PlayingField::setTick(Position pos) {
     field[pos.x_cor][pos.y_cor] = TICK;
 }
 
-bool PlayingField::setToe(Position pos) {
+void PlayingField::setToe(Position pos) {
     field[pos.x_cor][pos.y_cor] = TOE;
 }
-bool PlayingField::setTick(int x, int y) {
+void PlayingField::setTick(int x, int y) {
     field[x][y] = TICK;
 }
-bool PlayingField::setToe(int x, int y) {
+void PlayingField::setToe(int x, int y) {
     field[x][y] = TOE;
 }
 
@@ -40,8 +40,8 @@ int PlayingField::size() const {
 }
 
 void PlayingField::print() const {
-    for (int x = 0; x < field.size(); ++x) {
-        for (int y = 0; y < field.size(); ++y) {
+    for (int x = 0; x < static_cast<int>(field.size()); ++x) {
+        for (int y = 0; y < static_cast<int>(field.size()); ++y) {
             if (field[x][y] == TICK) {
                 cout << "X";
             }

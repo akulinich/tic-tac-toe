@@ -227,21 +227,42 @@ private:
 };
 
 
+////////////////////////////////////////////////
+////////////////////////////////////////////////
+/////////////////// USER GAME //////////////////
+////////////////////////////////////////////////
+////////////////////////////////////////////////
+
 
 class UserGame : public GameBase {
 Q_OBJECT
 
+    enum UserGameState {
+        NOT_STARTED_USER_GAME,
+        PLAYER_ONE_TURN,
+        PLAYER_TWO_TURN,
+        WAIT_NEXT_GAME_INFO
+    };
+
 public slots:
-    void slotGetUserTurn(Position) {}
-    void slotNewGame(bool) {}
-    void slotGetNewGameDecision(bool) {}
+    void slotGetUserTurn(Position);
+    void slotNewGame(bool);
+    void slotGetNewGameDecision(bool);
 
 public:
-    void play() {}
-    UserGame() : GameBase(5) {}
-    void reset() {}
+    void play();
+    UserGame(GameWidget*, int size);
+    void reset();
 
+protected:
+    GameWidget* game_widget;
+    Player left_player;
+    Player right_player;
+    Side left_player_side;
+    Side right_player_side;
+    UserGameState state;  
 };
+
 
 
 

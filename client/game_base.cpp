@@ -386,4 +386,75 @@ void CPUGame::slotGetNewGameDecision(bool decision) {
 
 }
 
+//////////////////////////////////////////////////
+////////////////// UserGame methods //////////////
+//////////////////////////////////////////////////
+
+
+void UserGame::slotGetUserTurn(Position position) {
+    if (state == UserGameState::PLAYER_ONE_TURN ||
+        state == UserGameState::PLAYER_TWO_TURN) {
+        if (!game.possiblyDecision(position)) {
+            return;
+        }
+        Player current_player = state == UserGameState::PLAYER_ONE_TURN ?
+                left_player : right_player;
+        Side current_side = state == UserGameState::PLAYER_ONE_TURN ? 
+                left_player_side : right_player_side;
+
+        game.playerDecision(position, current_player);
+        game_widget->newTurn(Turn(position, current_side, current_player));
+        state = state == UserGameState::PLAYER_ONE_TURN ? 
+            UserGameState::PLAYER_TWO_TURN : UserGameState::PLAYER_ONE_TURN;
+        
+        if (game.state() == PLAYER_ONE_WIN || game.state() == PLAYER_TWO_WIN 
+                || game.state() == DRAW) {
+            state = UserGameState::WAIT_NEXT_GAME_INFO;
+            game_widget->endGame(game.state());
+        }    
+    }
+}
+
+void UserGame::slotNewGame(bool flag) {
+
+}
+
+void UserGame::slotGetNewGameDecision(bool decision) {
+    if (decision) {
+        game_widget->clear();
+        game.resetGame();
+        std::swap(left_player_side, right_player_side);
+        game.start(left_player_side, right_player_side);
+        if (left_player_side == TICK_SIDE) {
+            state = PLAYER_ONE_TURN;
+        } else {
+            state = PLAYER_TWO_TURN;
+        }
+    } else {
+        state = UserGameState::NOT_STARTED_USER_GAME;
+    }
+}
+
+
+void UserGame::play() {
+
+}
+
+UserGame::UserGame(GameWidget* widget, int size) 
+        : GameBase(size), game_widget(widget) {
+    left_player = PLAYER_ONE;
+    right_player = PLAYER_TWO;    
+    left_player_side = TICK_SIDE;
+    right_player_side = TOE_SIDE;
+    state = NOT_STARTED_USER_GAME;
+    game.start(TICK_SIDE, TOE_SIDE);
+    state = PLAYER_ONE_TURN;
+}
+
+void UserGame::reset() {
+
+}
+
+
+
 

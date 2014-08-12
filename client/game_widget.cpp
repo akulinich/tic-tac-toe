@@ -134,7 +134,7 @@ void GameWidget::raizeEndGame() {
 void GameWidget::slotSetPlayerVsPlayer() {
     emit signalSendMessage("player vs player game started");
     delete game;
-    game = new UserGame();
+    game = new UserGame(this, field_size);
     connect(this, SIGNAL(signalMouseClicked(Position)), 
         game, SLOT(slotGetUserTurn(Position)));
     type = PlVsPl;

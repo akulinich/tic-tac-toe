@@ -155,5 +155,9 @@ int GameKernel::size() const {
     return field.size();
 }
 
+Cell GameKernel::operator()(int x_cor, int y_cor) {
+    return field[Position(x_cor, y_cor)];
+}
+
 
 

@@ -21,7 +21,8 @@ HEADERS += game_kernel.h \
            game_stat_widget.h \ 
            main_window.h \
            structurs.h \
-           playing_field.h
+           playing_field.h \
+           cpu_player.h
            
            
 SOURCES += main.cpp \
@@ -30,4 +31,5 @@ SOURCES += main.cpp \
            game_stat_widget.cpp \
            main_window.cpp \
            game_base.cpp \
-           playing_field.cpp
+           playing_field.cpp \
+           cpu_player.cpp

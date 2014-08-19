@@ -40,6 +40,8 @@ public:
     void print() const;
     int size() const;
 
+    Cell operator()(int x_cor, int y_cor);
+
 private:
     bool winPosition(const Position& position) const;
     void gameOver();

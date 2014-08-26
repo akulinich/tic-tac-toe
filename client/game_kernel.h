@@ -30,7 +30,7 @@ public:
 
     GameState state() const;
     
-    bool possiblyDecision(Position pos);
+    bool possiblyDecision(Position pos) const;
     int sizeOfField();
     Side getPlayerSide(Player player);
 
@@ -40,7 +40,7 @@ public:
     void print() const;
     int size() const;
 
-    Cell operator()(int x_cor, int y_cor);
+    Cell operator()(int x_cor, int y_cor) const;
 
 private:
     bool winPosition(const Position& position) const;

@@ -3,6 +3,7 @@
 
 #include "game_widget.h"
 #include "game_kernel.h"
+#include "cpu_player.h"
 #include "structurs.h"
 
 #include <QtGui>
@@ -219,6 +220,7 @@ signals:
 private:
 
     GameWidget* game_widget;
+    CPUplayer CPU;
     Player user_player;
     Player cpu_player;
     Side user_player_side;

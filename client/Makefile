@@ -51,7 +51,8 @@ SOURCES       = main.cpp \
 		game_stat_widget.cpp \
 		main_window.cpp \
 		game_base.cpp \
-		playing_field.cpp moc_game_widget.cpp \
+		playing_field.cpp \
+		cpu_player.cpp moc_game_widget.cpp \
 		moc_game_base.cpp \
 		moc_game_stat_widget.cpp \
 		moc_main_window.cpp
@@ -62,6 +63,7 @@ OBJECTS       = main.o \
 		main_window.o \
 		game_base.o \
 		playing_field.o \
+		cpu_player.o \
 		moc_game_widget.o \
 		moc_game_base.o \
 		moc_game_stat_widget.o \
@@ -189,7 +191,8 @@ DIST          = ../../../Qt/5.3/clang_64/mkspecs/features/spec_pre.prf \
 		game_stat_widget.cpp \
 		main_window.cpp \
 		game_base.cpp \
-		playing_field.cpp
+		playing_field.cpp \
+		cpu_player.cpp
 QMAKE_TARGET  = Tic-Tac-Toe
 DESTDIR       = ../build/#avoid trailing-slash linebreak
 TARGET        = ../build/Tic-Tac-Toe.app/Contents/MacOS/Tic-Tac-Toe
@@ -499,7 +502,7 @@ qmake_all: FORCE
 	@sed -e "s,@SHORT_VERSION@,1.0,g" -e "s,@TYPEINFO@,????,g" -e "s,@ICON@,,g" -e "s,@BUNDLEIDENTIFIER@,HSETic-Tac-Toe,g" -e "s,@EXECUTABLE@,Tic-Tac-Toe,g" -e "s,@TYPEINFO@,????,g" ../../../Qt/5.3/clang_64/mkspecs/macx-clang/Info.plist.app >../build/Tic-Tac-Toe.app/Contents/Info.plist
 dist: 
 	@test -d .tmp/Tic-Tac-Toe1.0.0 || mkdir -p .tmp/Tic-Tac-Toe1.0.0
-	$(COPY_FILE) --parents $(DIST) .tmp/Tic-Tac-Toe1.0.0/ && $(COPY_FILE) --parents game_kernel.h game_widget.h game_base.h game_stat_widget.h main_window.h structurs.h playing_field.h .tmp/Tic-Tac-Toe1.0.0/ && $(COPY_FILE) --parents main.cpp game_kernel.cpp game_widget.cpp game_stat_widget.cpp main_window.cpp game_base.cpp playing_field.cpp .tmp/Tic-Tac-Toe1.0.0/ && (cd `dirname .tmp/Tic-Tac-Toe1.0.0` && $(TAR) Tic-Tac-Toe1.0.0.tar Tic-Tac-Toe1.0.0 && $(COMPRESS) Tic-Tac-Toe1.0.0.tar) && $(MOVE) `dirname .tmp/Tic-Tac-Toe1.0.0`/Tic-Tac-Toe1.0.0.tar.gz . && $(DEL_FILE) -r .tmp/Tic-Tac-Toe1.0.0
+	$(COPY_FILE) --parents $(DIST) .tmp/Tic-Tac-Toe1.0.0/ && $(COPY_FILE) --parents game_kernel.h game_widget.h game_base.h game_stat_widget.h main_window.h structurs.h playing_field.h cpu_player.h .tmp/Tic-Tac-Toe1.0.0/ && $(COPY_FILE) --parents main.cpp game_kernel.cpp game_widget.cpp game_stat_widget.cpp main_window.cpp game_base.cpp playing_field.cpp cpu_player.cpp .tmp/Tic-Tac-Toe1.0.0/ && (cd `dirname .tmp/Tic-Tac-Toe1.0.0` && $(TAR) Tic-Tac-Toe1.0.0.tar Tic-Tac-Toe1.0.0 && $(COMPRESS) Tic-Tac-Toe1.0.0.tar) && $(MOVE) `dirname .tmp/Tic-Tac-Toe1.0.0`/Tic-Tac-Toe1.0.0.tar.gz . && $(DEL_FILE) -r .tmp/Tic-Tac-Toe1.0.0
 
 
 clean:compiler_clean 
@@ -663,6 +666,7 @@ moc_game_widget.cpp: ../../../Qt/5.3/clang_64/lib/QtCore.framework/Versions/5/He
 		structurs.h \
 		game_kernel.h \
 		playing_field.h \
+		cpu_player.h \
 		../../../Qt/5.3/clang_64/lib/QtGui.framework/Versions/5/Headers/QtGui \
 		../../../Qt/5.3/clang_64/lib/QtGui.framework/Versions/5/Headers/qaccessible.h \
 		../../../Qt/5.3/clang_64/lib/QtGui.framework/Versions/5/Headers/qaccessiblebridge.h \
@@ -931,6 +935,7 @@ moc_game_base.cpp: game_widget.h \
 		game_kernel.h \
 		structurs.h \
 		playing_field.h \
+		cpu_player.h \
 		../../../Qt/5.3/clang_64/lib/QtGui.framework/Versions/5/Headers/QtGui \
 		../../../Qt/5.3/clang_64/lib/QtGui.framework/Versions/5/Headers/qaccessible.h \
 		../../../Qt/5.3/clang_64/lib/QtGui.framework/Versions/5/Headers/qaccessiblebridge.h \
@@ -1295,6 +1300,7 @@ moc_game_stat_widget.cpp: ../../../Qt/5.3/clang_64/lib/QtGui.framework/Versions/
 		game_kernel.h \
 		structurs.h \
 		playing_field.h \
+		cpu_player.h \
 		../../../Qt/5.3/clang_64/lib/QtNetwork.framework/Versions/5/Headers/QtNetwork \
 		../../../Qt/5.3/clang_64/lib/QtNetwork.framework/Versions/5/Headers/qabstractnetworkcache.h \
 		../../../Qt/5.3/clang_64/lib/QtNetwork.framework/Versions/5/Headers/qhttpmultipart.h \
@@ -1563,6 +1569,7 @@ moc_main_window.cpp: ../../../Qt/5.3/clang_64/lib/QtGui.framework/Versions/5/Hea
 		../../../Qt/5.3/clang_64/lib/QtCore.framework/Versions/5/Headers/QList \
 		../../../Qt/5.3/clang_64/lib/QtCore.framework/Versions/5/Headers/qlist.h \
 		game_base.h \
+		cpu_player.h \
 		../../../Qt/5.3/clang_64/lib/QtNetwork.framework/Versions/5/Headers/QtNetwork \
 		../../../Qt/5.3/clang_64/lib/QtNetwork.framework/Versions/5/Headers/qabstractnetworkcache.h \
 		../../../Qt/5.3/clang_64/lib/QtNetwork.framework/Versions/5/Headers/qhttpmultipart.h \
@@ -1849,6 +1856,7 @@ main.o: main.cpp ../../../Qt/5.3/clang_64/lib/QtGui.framework/Versions/5/Headers
 		../../../Qt/5.3/clang_64/lib/QtCore.framework/Versions/5/Headers/QList \
 		../../../Qt/5.3/clang_64/lib/QtCore.framework/Versions/5/Headers/qlist.h \
 		game_base.h \
+		cpu_player.h \
 		../../../Qt/5.3/clang_64/lib/QtNetwork.framework/Versions/5/Headers/QtNetwork \
 		../../../Qt/5.3/clang_64/lib/QtNetwork.framework/Versions/5/Headers/qabstractnetworkcache.h \
 		../../../Qt/5.3/clang_64/lib/QtNetwork.framework/Versions/5/Headers/qhttpmultipart.h \
@@ -2028,6 +2036,7 @@ game_widget.o: game_widget.cpp game_widget.h \
 		game_kernel.h \
 		structurs.h \
 		playing_field.h \
+		cpu_player.h \
 		../../../Qt/5.3/clang_64/lib/QtGui.framework/Versions/5/Headers/QtGui \
 		../../../Qt/5.3/clang_64/lib/QtGui.framework/Versions/5/Headers/qaccessible.h \
 		../../../Qt/5.3/clang_64/lib/QtGui.framework/Versions/5/Headers/qaccessiblebridge.h \
@@ -2157,6 +2166,8 @@ game_widget.o: game_widget.cpp game_widget.h \
 		../../../Qt/5.3/clang_64/lib/QtNetwork.framework/Versions/5/Headers/qsslkey.h \
 		../../../Qt/5.3/clang_64/lib/QtNetwork.framework/Versions/5/Headers/qsslsocket.h \
 		../../../Qt/5.3/clang_64/lib/QtNetwork.framework/Versions/5/Headers/qtnetworkversion.h \
+		main_window.h \
+		game_stat_widget.h \
 		../../../Qt/5.3/clang_64/lib/QtCore.framework/Versions/5/Headers/QtDebug \
 		../../../Qt/5.3/clang_64/lib/QtCore.framework/Versions/5/Headers/qdebug.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o game_widget.o game_widget.cpp
@@ -2394,6 +2405,7 @@ game_stat_widget.o: game_stat_widget.cpp game_stat_widget.h \
 		game_kernel.h \
 		structurs.h \
 		playing_field.h \
+		cpu_player.h \
 		../../../Qt/5.3/clang_64/lib/QtNetwork.framework/Versions/5/Headers/QtNetwork \
 		../../../Qt/5.3/clang_64/lib/QtNetwork.framework/Versions/5/Headers/qabstractnetworkcache.h \
 		../../../Qt/5.3/clang_64/lib/QtNetwork.framework/Versions/5/Headers/qhttpmultipart.h \
@@ -2662,6 +2674,7 @@ main_window.o: main_window.cpp main_window.h \
 		../../../Qt/5.3/clang_64/lib/QtCore.framework/Versions/5/Headers/QList \
 		../../../Qt/5.3/clang_64/lib/QtCore.framework/Versions/5/Headers/qlist.h \
 		game_base.h \
+		cpu_player.h \
 		../../../Qt/5.3/clang_64/lib/QtNetwork.framework/Versions/5/Headers/QtNetwork \
 		../../../Qt/5.3/clang_64/lib/QtNetwork.framework/Versions/5/Headers/qabstractnetworkcache.h \
 		../../../Qt/5.3/clang_64/lib/QtNetwork.framework/Versions/5/Headers/qhttpmultipart.h \
@@ -2834,6 +2847,7 @@ game_base.o: game_base.cpp game_base.h \
 		structurs.h \
 		game_kernel.h \
 		playing_field.h \
+		cpu_player.h \
 		../../../Qt/5.3/clang_64/lib/QtGui.framework/Versions/5/Headers/QtGui \
 		../../../Qt/5.3/clang_64/lib/QtGui.framework/Versions/5/Headers/qaccessible.h \
 		../../../Qt/5.3/clang_64/lib/QtGui.framework/Versions/5/Headers/qaccessiblebridge.h \
@@ -2968,6 +2982,9 @@ game_base.o: game_base.cpp game_base.h \
 playing_field.o: playing_field.cpp structurs.h \
 		playing_field.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o playing_field.o playing_field.cpp
+
+cpu_player.o: cpu_player.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o cpu_player.o cpu_player.cpp
 
 moc_game_widget.o: moc_game_widget.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_game_widget.o moc_game_widget.cpp

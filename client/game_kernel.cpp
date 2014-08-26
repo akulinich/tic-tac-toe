@@ -50,7 +50,7 @@ GameState GameKernel::state() const {
 
 
 
-bool GameKernel::possiblyDecision(Position pos) {
+bool GameKernel::possiblyDecision(Position pos) const {
     return field[pos] == EMPTY;
 }
 
@@ -155,7 +155,7 @@ int GameKernel::size() const {
     return field.size();
 }
 
-Cell GameKernel::operator()(int x_cor, int y_cor) {
+Cell GameKernel::operator()(int x_cor, int y_cor) const {
     return field[Position(x_cor, y_cor)];
 }
 

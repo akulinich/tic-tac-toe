@@ -7,10 +7,12 @@
 #include "structurs.h"
 
 #include <vector>
-#include <array>
+#include <string>
+#include <iostream>
 
 using std::vector;
-using std::array;
+using std::cout;
+using std::endl;
 
 // enum class ? Read about it!
 // may be i must recombine it in order?
@@ -27,56 +29,20 @@ enum TypeOfProfile {
 
     TwoInLineOpen
 
-}
+};
 
 class CPUplayer {
-public:
-    CPUplayer(const GameKernel& game, Side my_side) : game(game), my_side(my_side) {
-        my_values = vector<vector<int>>(game.size(), vecotr<int>(game.size()));
-        opponent_values = vector<vector<int>>(game.size(), 
-            vecotr<int>(game.size()));
-        opponent_side = my_side == TICK_SIDE ? TOE_SIDE : TICK_SIDE;
-    }
+    typedef std::string Profile;
 
-    Position MakeDecision() {
-        CalculateAllValues();
-        double max_value = 0;
-        Position best_position;
-        for (int x = 0; x < game.size(); ++x) {
-            for (int y = 0; y < game.size(); ++y) {
-                double new_value = my_values[x][y] + 
-                    aggression * opponent_values[x][y];
-                if (max_value < new_value) {
-                    max_value = new_value;
-                    best_position = Position(x,y);
-                }
-            }
-        }
-        return best_position;
-    }
+public:
+    CPUplayer(const GameKernel& game, Side my_side);
+    Position MakeDecision();
+    void SetSide(Side side);
 
 private:
-    void CalculateAllValues() {
-        for (int x  = 0; x < game.size(); ++x) {
-            for (int y = 0; y < game.size(); ++y) {
-                my_values[x][y] = ValueForCell(Position(x,y), my_side);
-                opponent_values[x][y] = ValueForCell(Position(x,y), opponent_side);
-            }
-        }
-    }
+    void CalculateAllValues() ;
 
-    int ValueForCell(Position position, Side side) {
-        int x = position.x_cor;
-        int y = position.y_cor; 
-        Cell sign = side == TICK_SIDE ? TICK : TOE;
-        if (game(x,y) == TICK || game(x,y) == TOE) {
-            return 0;
-        }
-        return CalculateValueInDerection(x, y, 1, 1, sign) +
-             CalculateValueInDerection(x, y, 1, -1, sign) +
-             CalculateValueInDerection(x, y, 1, 0, sign) +
-             CalculateValueInDerection(x, y, 0, 1, sign);
-    }
+    int ValueForCell(Position position, Side side);
 
     // variants of directions:
     // diaganals:
@@ -85,9 +51,7 @@ private:
     // non diaganals:
     // dx = 1 dy = 0
     // dx = 0 dy = 1
-    int CalculateValueInDerection(int x, int y, int dx, int dy, Cell sign) {
-
-    }
+    int CalculateValueInDerection(int x, int y, int dx, int dy, Cell sign);
 
     // methodes for find combinations
     // * - any symbol
@@ -100,7 +64,7 @@ private:
 
     // .xxxx.
     // x.xxx.x
-    bool FindFourInLIne(const Profile& profile);
+    bool FindFourInLine(const Profile& profile);
 
     // TODO : четверки типа x.xxx. сильнее x.xxxo
     // oxxxx.
@@ -136,33 +100,11 @@ private:
     // another hand.
     // if cell not exist or have opponet side then -1 put in vector
     // if cell is empty then put in vector 0
-    // if cell have opponent side then 1 put in vector
-    // cel number 7 is (x,y) cell it is have 0 in any case
-    Profile GetProfileOfDirection(int x, int y, int dx, int dy, Cell sign) {
-        int x_start = x - dx * 6;
-        int y_start = y - dy * 6;
-        Profile profile;
-        for (int step = 0; step < size_of_profile; ++step) {
-            if (x_start >= 0 && x_start < game.size() 
-                    && y_start >= 0 && y_start < game.size()) {
-                if (game(x,y) == sign) {
-                    profile[step] = 1;
-                } else if (gam(x,y) == EMPTY) {
-                    profile[step] = 0;
-                } else {
-                    profile[step] = -1;
-                }
-            } else {
-                profile[step] = -1;
-            }
-
-            x_start += dx;
-            y_start += dy;
-        }
-        return profile;
-    }
+    // if cell have my side then 1 put in vector
+    // cel number 6 is (x,y) cell it is have 0 in any case
+    Profile GetProfileOfDirection(int x, int y, int dx, int dy, Cell sign) ;
     
-    typedef array<int, size_of_profile> Profile;
+    
 
     const int size_of_profile = 13;
     const double aggression = 1.0;

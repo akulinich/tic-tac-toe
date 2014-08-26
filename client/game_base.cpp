@@ -314,7 +314,8 @@ void NetGame::slotNewGame(bool) {
 
 
 CPUGame::CPUGame(GameWidget* widget, int size) : GameBase(size), 
-                                                game_widget(widget) {
+                                                game_widget(widget),
+                                                CPU(game, TOE_SIDE) {
     user_player = PLAYER_ONE;
     cpu_player = PLAYER_TWO;
     user_player_side = TICK_SIDE;
@@ -356,6 +357,7 @@ void CPUGame::slotGetCPUTurn() {
             pos.x_cor = rand() % game.size();
             pos.y_cor = rand() % game.size();
         } while(!game.possiblyDecision(pos));
+        pos = CPU.MakeDecision();
         game.playerDecision(pos, cpu_player);
         game_widget->newTurn(Turn(pos, cpu_player_side, cpu_player));
         state = USER_TURN;
@@ -372,6 +374,7 @@ void CPUGame::slotGetNewGameDecision(bool decision) {
         game_widget->clear();
         game.resetGame();
         std::swap(cpu_player_side, user_player_side);
+        CPU.SetSide(cpu_player_side);
         game.start(TICK_SIDE, TOE_SIDE);
 
         if (user_player_side == TICK_SIDE) {

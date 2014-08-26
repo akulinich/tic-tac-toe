@@ -352,12 +352,7 @@ void CPUGame::slotGetUserTurn(Position pos) {
 
 void CPUGame::slotGetCPUTurn() {
     if (state == CPU_TURN) {
-        Position pos;
-        do {
-            pos.x_cor = rand() % game.size();
-            pos.y_cor = rand() % game.size();
-        } while(!game.possiblyDecision(pos));
-        pos = CPU.MakeDecision();
+        Position pos = CPU.MakeDecision();
         game.playerDecision(pos, cpu_player);
         game_widget->newTurn(Turn(pos, cpu_player_side, cpu_player));
         state = USER_TURN;
@@ -375,7 +370,7 @@ void CPUGame::slotGetNewGameDecision(bool decision) {
         game.resetGame();
         std::swap(cpu_player_side, user_player_side);
         CPU.SetSide(cpu_player_side);
-        game.start(TICK_SIDE, TOE_SIDE);
+        game.start(user_player_side, cpu_player_side);
 
         if (user_player_side == TICK_SIDE) {
             state = USER_TURN;

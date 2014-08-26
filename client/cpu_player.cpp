@@ -15,8 +15,8 @@ Position CPUplayer::MakeDecision() {
     Position best_position;
     for (int x = 0; x < game.size(); ++x) {
         for (int y = 0; y < game.size(); ++y) {
-            double new_value = my_values[x][y] + 
-                aggression * opponent_values[x][y];
+            double new_value = aggression * my_values[x][y] + 
+                 opponent_values[x][y];
             if (!game.possiblyDecision(Position(x,y))) {
                 new_value = -1;
             }
@@ -27,6 +27,10 @@ Position CPUplayer::MakeDecision() {
             }
         }
     }
+    if (max_value == 0) {
+        best_position = Position(game.size() / 2, game.size() / 2);
+    }
+    cout << "decision : " << best_position.x_cor << " " << best_position.y_cor << endl;
     return best_position;
 }
 
@@ -47,10 +51,34 @@ int CPUplayer::ValueForCell(Position position, Side side) {
     if (game(x,y) == TICK || game(x,y) == TOE) {
         return 0;
     }
-    return CalculateValueInDerection(x, y, 1, 1, sign) +
-         CalculateValueInDerection(x, y, 1, -1, sign) +
-         CalculateValueInDerection(x, y, 1, 0, sign) +
-         CalculateValueInDerection(x, y, 0, 1, sign);
+    int sum_of_values = 0;
+    int count_of_fork = 0;
+    int value_in_direction = CalculateValueInDerection(x, y, 1, 1, sign);
+    sum_of_values += value_in_direction;
+    if (value_in_direction > three_in_line_closed) {
+        ++count_of_fork;
+    }
+    value_in_direction = CalculateValueInDerection(x, y, 1, -1, sign);
+    sum_of_values += value_in_direction;
+    if (value_in_direction > three_in_line_closed) {
+        ++count_of_fork;
+    }
+    value_in_direction = CalculateValueInDerection(x, y, 1, 0, sign);
+    sum_of_values += value_in_direction;
+    if (value_in_direction > three_in_line_closed) {
+        ++count_of_fork;
+    }
+    value_in_direction = CalculateValueInDerection(x, y, 0, 1, sign);
+    sum_of_values += value_in_direction;
+    if (value_in_direction > three_in_line_closed) {
+        ++count_of_fork;
+    }
+
+    if (count_of_fork > 1) {
+        sum_of_values += fork_bonus;
+    }
+
+    return sum_of_values;
 }
 
 // variants of directions:
@@ -252,5 +280,6 @@ CPUplayer::Profile CPUplayer::GetProfileOfDirection(int x, int y, int dx, int dy
 
 void CPUplayer::SetSide(Side side) {
     my_side = side;
+    opponent_side = side == TOE_SIDE ? TICK_SIDE : TOE_SIDE;
 }
 

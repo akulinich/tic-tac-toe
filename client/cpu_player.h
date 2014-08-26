@@ -107,15 +107,16 @@ private:
     
 
     const int size_of_profile = 13;
-    const double aggression = 1.0;
+    const double aggression = 1.3;
 
-    const int five_in_line = 100;
-    const int four_in_line = 20;
+    const int five_in_line = 150;
+    const int four_in_line = 50;
     const int four_in_line_closed = 10;
     const int fork = 10;
     const int three_in_line = 10;
     const int three_in_line_closed = 5;
     const int two_in_line = 5;
+    const int fork_bonus = 25;
 
     Side my_side;
     Side opponent_side;
